@@ -1,0 +1,1238 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Chat - ChatSender">
+    <div class="fixed inset-0 bg-black overflow-hidden -z-10">
+        <div
+            class="absolute top-0 left-0 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl opacity-40"
+        >
+        </div>
+        <div
+            class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-800/20 rounded-full blur-3xl opacity-30"
+        >
+        </div>
+
+        <div
+            class="absolute top-20 left-20 w-32 h-32 bg-purple-500/40 rounded-full blur-2xl animate-float"
+        >
+        </div>
+        <div
+            class="absolute bottom-32 right-1/4 w-24 h-24 bg-purple-600/40 rounded-full blur-xl animate-float"
+            style="animation-delay: 2s"
+        >
+        </div>
+
+        <div
+            class="absolute top-40 right-1/3 w-1 h-1 bg-white rounded-full animate-twinkle"
+        >
+        </div>
+        <div
+            class="absolute bottom-20 left-1/4 w-1.5 h-1.5 bg-purple-300 rounded-full animate-twinkle"
+            style="animation-delay: 1s"
+        >
+        </div>
+    </div>
+
+    <main class="relative min-h-screen flex flex-col lg:flex-row">
+        <!-- Sidebar de información y chats activos -->
+        <aside
+            class="w-full lg:w-80 bg-purple-900/10 backdrop-blur-xl border-b lg:border-b-0 lg:border-r border-purple-500/20 flex flex-col"
+        >
+            <!-- Header del sidebar -->
+            <div class="p-4 sm:p-6 border-b border-purple-500/20">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div
+                                class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-900 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                    ></path>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"
+                            >
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-white font-bold text-sm">
+                                ChatSender
+                            </h2>
+                            <p class="text-purple-400/60 text-xs">
+                                Encriptado E2E
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        id="logoutButton"
+                        class="text-purple-400/60 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-500/10"
+                        title="Cerrar sesión"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            ></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Tu información de sesión -->
+                <div
+                    class="bg-black/40 border border-purple-500/20 rounded-xl p-4 space-y-3"
+                >
+                    <div>
+                        <label
+                            class="text-xs font-bold text-purple-300 uppercase tracking-wider block mb-1"
+                            >Tu Alias Temporal</label
+                        >
+                        <div class="flex items-center gap-2">
+                            <code
+                                id="userAlias"
+                                class="flex-1 text-purple-100 text-xs font-mono bg-purple-900/30 px-2 py-1.5 rounded-lg truncate"
+                                >Cargando...</code
+                            >
+                            <button
+                                id="copyAliasBtn"
+                                class="text-purple-400 hover:text-white transition-colors p-1.5 hover:bg-purple-500/10 rounded-lg"
+                                title="Copiar alias"
+                            >
+                                <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p
+                            class="text-[10px] text-purple-400/50 mt-1 flex items-center gap-1"
+                        >
+                            <svg
+                                class="w-3 h-3"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                            Cambia en cada sesión
+                        </p>
+                    </div>
+                    <button
+                        id="showPublicKeyBtn"
+                        class="w-full text-xs text-purple-400 hover:text-white transition-colors text-left px-2 py-1 hover:bg-purple-500/10 rounded-lg"
+                    >
+                        Ver mi llave pública →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chats activos -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="flex items-center justify-between mb-3 px-2">
+                    <h3
+                        class="text-xs font-bold text-purple-300 uppercase tracking-wider"
+                    >
+                        Chats Activos
+                    </h3>
+                    <span
+                        id="chatsCount"
+                        class="text-xs text-purple-400/60 font-medium">0</span
+                    >
+                </div>
+
+                <div id="chatsList" class="space-y-2">
+                    <!-- Los chats activos se mostrarán aquí -->
+                    <div class="text-center py-8 px-4">
+                        <p class="text-purple-400/60 text-xs">
+                            No hay chats activos. Inicia uno con el botón de
+                            arriba.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para nuevo chat -->
+            <div class="p-4 border-t border-purple-500/20">
+                <button
+                    id="newChatBtn"
+                    class="w-full bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] flex items-center justify-center gap-2"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>Nuevo Chat</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Área de chat -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header del chat -->
+            <header
+                class="bg-purple-900/10 backdrop-blur-xl border-b border-purple-500/20 p-4 sm:p-6"
+            >
+                <div id="chatHeader" class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <button
+                            id="backButton"
+                            class="lg:hidden text-purple-400 hover:text-white transition-colors"
+                        >
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="text-center lg:text-left">
+                            <h1 class="text-white text-lg font-bold">
+                                Selecciona un usuario
+                            </h1>
+                            <p class="text-purple-400/60 text-sm">
+                                para iniciar una conversación encriptada
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden sm:flex items-center gap-2">
+                        <div
+                            class="px-3 py-1.5 bg-purple-600/20 border border-purple-500/30 rounded-full"
+                        >
+                            <span class="text-purple-300 text-xs font-medium"
+                                >E2E Activo</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Mensajes del chat -->
+            <div
+                id="chatMessages"
+                class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"
+            >
+                <!-- Estado inicial - sin chat seleccionado -->
+                <div
+                    id="emptyState"
+                    class="flex items-center justify-center h-full"
+                >
+                    <div class="text-center max-w-md animate-fade-in-up">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 bg-purple-600/20 rounded-3xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-10 h-10 text-purple-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-white text-xl font-bold mb-2">
+                            Comunicación Privada
+                        </h2>
+                        <p
+                            class="text-purple-400/60 text-sm leading-relaxed mb-4"
+                        >
+                            Para iniciar un chat, necesitas el <strong
+                                class="text-purple-300">alias temporal</strong
+                            > o la <strong class="text-purple-300"
+                                >llave pública</strong
+                            > del destinatario.
+                        </p>
+                        <button
+                            id="startChatBtn"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Iniciar Nuevo Chat</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Los mensajes se cargarán dinámicamente aquí -->
+            </div>
+
+            <!-- Input de mensajes -->
+            <div
+                id="messageInputArea"
+                class="hidden border-t border-purple-500/20 bg-purple-900/10 backdrop-blur-xl p-4 sm:p-6"
+            >
+                <form id="messageForm" class="flex gap-3">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Escribe un mensaje encriptado..."
+                        class="flex-1 px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-sm focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all"
+                        disabled
+                    />
+                    <button
+                        type="submit"
+                        class="px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        disabled
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para nuevo chat -->
+    <div
+        id="newChatModal"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    >
+        <div
+            class="bg-purple-900/20 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full max-w-lg animate-fade-in-up shadow-[0_0_50px_rgba(147,51,234,0.3)]"
+        >
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-white text-xl font-bold">Iniciar Nuevo Chat</h2>
+                <button
+                    id="closeModalBtn"
+                    class="text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="newChatForm" class="space-y-4">
+                <div>
+                    <label
+                        for="recipientInput"
+                        class="block text-xs font-bold text-purple-300 uppercase tracking-wider mb-2"
+                    >
+                        Alias Temporal o Llave Pública del Destinatario
+                    </label>
+                    <textarea
+                        id="recipientInput"
+                        rows="3"
+                        class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-sm font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all resize-none"
+                        placeholder="Ejemplo: user_abc123
+o
+-----BEGIN PUBLIC KEY-----..."
+                        required></textarea>
+                    <p
+                        class="text-[10px] text-purple-400/50 mt-2 flex items-start gap-1.5"
+                    >
+                        <svg
+                            class="w-3 h-3 mt-0.5 flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                        </svg>
+                        <span
+                            >Los alias temporales cambian en cada sesión.
+                            Solicita el alias o llave pública actualizada al
+                            destinatario.</span
+                        >
+                    </p>
+                </div>
+
+                <div id="modalError" class="hidden animate-fade-in-up">
+                    <div
+                        class="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl text-xs flex items-center gap-3"
+                    >
+                        <svg
+                            class="w-5 h-5 flex-shrink-0 text-red-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                        </svg>
+                        <span id="modalErrorText">Error</span>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    id="connectButton"
+                    class="w-full bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] flex items-center justify-center gap-2"
+                >
+                    <span id="connectButtonText">Conectar</span>
+                    <svg
+                        id="connectButtonIcon"
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <svg
+                        id="connectLoadingIcon"
+                        class="w-5 h-5 animate-spin hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar llave pública -->
+    <div
+        id="publicKeyModal"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    >
+        <div
+            class="bg-purple-900/20 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full max-w-lg animate-fade-in-up shadow-[0_0_50px_rgba(147,51,234,0.3)]"
+        >
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-white text-xl font-bold">Tu Llave Pública</h2>
+                <button
+                    id="closePublicKeyModalBtn"
+                    class="text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label
+                        class="block text-xs font-bold text-purple-300 uppercase tracking-wider mb-2"
+                    >
+                        Llave Pública
+                    </label>
+                    <div class="relative">
+                        <textarea
+                            id="publicKeyDisplay"
+                            rows="6"
+                            class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 text-xs font-mono resize-none"
+                            readonly></textarea>
+                        <button
+                            id="copyPublicKeyBtn"
+                            class="absolute top-3 right-3 text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
+                            title="Copiar"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-purple-400/50 mt-2">
+                        Comparte esta llave para que otros puedan iniciar un
+                        chat contigo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    import { authService } from "../services/authService";
+    import { matrixService } from "../services/matrixService";
+
+    // Verificar autenticación
+    if (!authService.isAuthenticated()) {
+        window.location.href = "/login";
+    }
+
+    // Elementos del DOM
+    const chatsList = document.getElementById("chatsList") as HTMLDivElement;
+    const chatsCount = document.getElementById("chatsCount") as HTMLSpanElement;
+    const userAlias = document.getElementById("userAlias") as HTMLElement;
+    const copyAliasBtn = document.getElementById(
+        "copyAliasBtn",
+    ) as HTMLButtonElement;
+    const showPublicKeyBtn = document.getElementById(
+        "showPublicKeyBtn",
+    ) as HTMLButtonElement;
+    const newChatBtn = document.getElementById(
+        "newChatBtn",
+    ) as HTMLButtonElement;
+    const startChatBtn = document.getElementById(
+        "startChatBtn",
+    ) as HTMLButtonElement;
+    const chatMessages = document.getElementById(
+        "chatMessages",
+    ) as HTMLDivElement;
+    const messageInput = document.getElementById(
+        "messageInput",
+    ) as HTMLInputElement;
+    const messageForm = document.getElementById(
+        "messageForm",
+    ) as HTMLFormElement;
+    const messageInputArea = document.getElementById(
+        "messageInputArea",
+    ) as HTMLDivElement;
+    const emptyState = document.getElementById("emptyState") as HTMLDivElement;
+    const chatHeader = document.getElementById("chatHeader") as HTMLDivElement;
+    const logoutButton = document.getElementById(
+        "logoutButton",
+    ) as HTMLButtonElement;
+
+    // Modal nuevo chat
+    const newChatModal = document.getElementById(
+        "newChatModal",
+    ) as HTMLDivElement;
+    const closeModalBtn = document.getElementById(
+        "closeModalBtn",
+    ) as HTMLButtonElement;
+    const newChatForm = document.getElementById(
+        "newChatForm",
+    ) as HTMLFormElement;
+    const recipientInput = document.getElementById(
+        "recipientInput",
+    ) as HTMLTextAreaElement;
+    const connectButton = document.getElementById(
+        "connectButton",
+    ) as HTMLButtonElement;
+    const connectButtonText = document.getElementById(
+        "connectButtonText",
+    ) as HTMLSpanElement;
+    const connectButtonIcon = document.getElementById(
+        "connectButtonIcon",
+    ) as unknown as SVGElement;
+    const connectLoadingIcon = document.getElementById(
+        "connectLoadingIcon",
+    ) as unknown as SVGElement;
+    const modalError = document.getElementById("modalError") as HTMLDivElement;
+    const modalErrorText = document.getElementById(
+        "modalErrorText",
+    ) as HTMLSpanElement;
+
+    // Modal llave pública
+    const publicKeyModal = document.getElementById(
+        "publicKeyModal",
+    ) as HTMLDivElement;
+    const closePublicKeyModalBtn = document.getElementById(
+        "closePublicKeyModalBtn",
+    ) as HTMLButtonElement;
+    const publicKeyDisplay = document.getElementById(
+        "publicKeyDisplay",
+    ) as HTMLTextAreaElement;
+    const copyPublicKeyBtn = document.getElementById(
+        "copyPublicKeyBtn",
+    ) as HTMLButtonElement;
+
+    let currentChatRoomId: string | null = null;
+    let activeChats: Array<{
+        roomId: string;
+        recipientAlias: string;
+        recipientUserId: string;
+    }> = [];
+    let sessionInfo: any = null;
+
+    // Cargar información del usuario
+    async function loadUserInfo() {
+        try {
+            const token = authService.getToken();
+            if (!token) {
+                window.location.href = "/login";
+                return;
+            }
+
+            // Mostrar estado de carga
+            userAlias.textContent = "Conectando...";
+
+            // REGISTRAR LISTENERS ANTES DE INICIAR SESIÓN (Deep Fix)
+            matrixService.onMessage((roomId, event) => {
+                console.log(
+                    `🎮 [UI] Recibido mensaje para ${roomId}. Actual: ${currentChatRoomId}`,
+                );
+                // Si el mensaje es para la sala actual, mostrarlo
+                if (currentChatRoomId === roomId) {
+                    const content = event.getContent();
+                    if (content.msgtype === "m.text") {
+                        appendMessageToUI(
+                            content.body,
+                            "other",
+                            new Date(event.getTs()).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            }),
+                        );
+                    }
+                }
+            });
+
+            // Escuchar nuevas salas (invitaciones aceptadas, etc)
+            matrixService.onRoomUpdate((room) => {
+                console.log(
+                    "🔄 Actualización de salas detectada:",
+                    room?.roomId,
+                );
+                syncExistingChats();
+            });
+
+            // Iniciar sesión de chat en backend y conectar a Matrix
+            sessionInfo = await matrixService.startSession(token);
+
+            // Mostrar alias real del servidor
+            userAlias.textContent = sessionInfo.alias;
+
+            console.log("✅ Sesión Matrix iniciada:", sessionInfo);
+
+            // Sincronizar chats existentes
+            await syncExistingChats();
+        } catch (error) {
+            console.error("❌ Error al iniciar sesión Matrix:", error);
+            userAlias.textContent = "Error";
+            alert("Error al conectar con el servidor de chat.");
+        }
+
+        // Obtener llave pública del authService
+        const publicKey = authService.getPublicKey() || "No disponible";
+        publicKeyDisplay.value = publicKey;
+    }
+
+    // Sincronizar salas existentes de Matrix con la UI
+    async function syncExistingChats() {
+        if (!matrixService.isConnected()) return;
+
+        const rooms = matrixService.getRooms();
+        const myUserId = matrixService.getCurrentUserId();
+
+        for (const room of rooms) {
+            // Evitar duplicados si ya está en la lista
+            if (activeChats.find((c) => c.roomId === room.roomId)) continue;
+
+            // Encontrar al otro usuario en la sala
+            const members = room.getJoinedMembers();
+            const recipient = members.find((m: any) => m.userId !== myUserId);
+
+            if (recipient) {
+                try {
+                    // Intentar recuperar el alias desde el backend
+                    const response = await fetch("/api/users/lookup", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ query: recipient.userId }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.found) {
+                            activeChats.push({
+                                roomId: room.roomId,
+                                recipientAlias: data.alias,
+                                recipientUserId: recipient.userId,
+                            });
+                        } else {
+                            // Fallback: usar parte del ID de usuario
+                            activeChats.push({
+                                roomId: room.roomId,
+                                recipientAlias: recipient.userId
+                                    .split(":")[0]
+                                    .substring(1),
+                                recipientUserId: recipient.userId,
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.error(
+                        "Error recuperando alias para",
+                        recipient.userId,
+                        err,
+                    );
+                }
+            }
+        }
+
+        renderActiveChats();
+    }
+
+    // Generar alias temporal (fallback si falla Matrix)
+    function generateTempAlias(): string {
+        return `user_${Math.random().toString(36).substring(2, 15)}`;
+    }
+
+    // Renderizar lista de chats activos
+    function renderActiveChats() {
+        if (activeChats.length === 0) {
+            chatsList.innerHTML = `
+                <div class="text-center py-8 px-4">
+                    <p class="text-purple-400/60 text-xs">No hay chats activos. Inicia uno con el botón de arriba.</p>
+                </div>
+            `;
+            chatsCount.textContent = "0";
+            return;
+        }
+
+        chatsCount.textContent = activeChats.length.toString();
+
+        chatsList.innerHTML = activeChats
+            .map((chat) => {
+                return `
+                <button 
+                    data-chat-id="${chat.roomId}"
+                    class="chat-item w-full flex items-center gap-3 p-3 rounded-xl hover:bg-purple-900/20 transition-all group border border-transparent hover:border-purple-500/30 text-left"
+                >
+                    <div class="relative flex-shrink-0">
+                        <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-900 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-xs">${chat.recipientAlias.substring(0, 2).toUpperCase()}</span>
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"></div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white text-sm font-semibold truncate group-hover:text-purple-300 transition-colors">${chat.recipientAlias}</h4>
+                        <p class="text-purple-400/60 text-xs truncate">Click para abrir</p>
+                    </div>
+                </button>
+            `;
+            })
+            .join("");
+
+        // Agregar event listeners a los chats
+        document.querySelectorAll(".chat-item").forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const chatId = (e.currentTarget as HTMLElement).getAttribute(
+                    "data-chat-id",
+                );
+                const chat = activeChats.find((c) => c.roomId === chatId);
+                if (chat) openChat(chat);
+            });
+        });
+    }
+
+    // Abrir chat con un contacto
+    function openChat(chat: (typeof activeChats)[0]) {
+        currentChatRoomId = chat.roomId;
+
+        chatHeader.innerHTML = `
+            <div class="flex items-center gap-3">
+                <button id="backButton" class="lg:hidden text-purple-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div class="relative">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-900 rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xs">${chat.recipientAlias.substring(0, 2).toUpperCase()}</span>
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"></div>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-sm">${chat.recipientAlias}</h3>
+                    <div class="flex items-center gap-2">
+                        <p class="text-purple-400/60 text-xs">Encriptado E2E</p>
+                        <span class="text-[10px] text-purple-500/40 font-mono">ID: ${chat.roomId.split(":")[0]}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="hidden sm:flex px-3 py-1.5 bg-green-600/20 border border-green-500/30 rounded-full">
+                    <span class="text-green-300 text-xs font-medium">Encriptado</span>
+                </div>
+            </div>
+        `;
+
+        // Mostrar área de mensajes y ocultar estado vacío
+        emptyState.classList.add("hidden");
+        messageInputArea.classList.remove("hidden");
+        messageInput.disabled = false;
+        messageForm.querySelector("button")?.removeAttribute("disabled");
+
+        // Cargar mensajes con reintentos para salas nuevas
+        loadMessagesWithRetry(chat.roomId);
+
+        // Agregar evento al botón de volver en móvil
+        document
+            .getElementById("backButton")
+            ?.addEventListener("click", closeChat);
+    }
+
+    // Cerrar chat (para móvil)
+    function closeChat() {
+        currentChatRoomId = null;
+        emptyState.classList.remove("hidden");
+        messageInputArea.classList.add("hidden");
+        chatMessages.innerHTML = "";
+        chatMessages.appendChild(emptyState);
+    }
+
+    // Cargar mensajes con reintentos (útil para salas recién creadas)
+    async function loadMessagesWithRetry(roomId: string, retries = 10) {
+        console.log(`🔍 Intentando cargar mensajes para ${roomId}...`);
+        const timeline = matrixService.getRoomTimeline(roomId);
+
+        if (timeline.length === 0 && retries > 0) {
+            console.log(
+                `⏳ Sala ${roomId} vacía o no encontrada, reintentando en 1s... (${retries} restantes)`,
+            );
+            setTimeout(() => loadMessagesWithRetry(roomId, retries - 1), 1000);
+            return;
+        }
+
+        console.log(
+            `✅ Timeline obtenido para ${roomId}: ${timeline.length} eventos`,
+        );
+        renderTimeline(roomId, timeline);
+    }
+
+    // Cargar mensajes directamente
+    async function loadMessages(roomId: string) {
+        const timeline = matrixService.getRoomTimeline(roomId);
+        renderTimeline(roomId, timeline);
+    }
+
+    // Renderizar el timeline en la UI
+    function renderTimeline(roomId: string, timeline: any[]) {
+        if (currentChatRoomId !== roomId) return; // Ya no estamos en esta sala
+
+        chatMessages.innerHTML = ""; // Limpiar
+        console.log(
+            `📜 Renderizando ${timeline.length} eventos para ${roomId}`,
+        );
+
+        timeline.forEach((event) => {
+            if (event.getType() !== "m.room.message") return;
+
+            const content = event.getContent();
+            if (content.msgtype !== "m.text") return;
+
+            const isMe = event.getSender() === matrixService.getCurrentUserId();
+            const time = new Date(event.getTs()).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+
+            console.log(
+                `   - Mensaje de ${isMe ? "mí" : "otro"}: ${content.body.substring(0, 20)}...`,
+            );
+            appendMessageToUI(content.body, isMe ? "me" : "other", time);
+        });
+    }
+
+    // Función para agregar mensaje a la UI
+    function appendMessageToUI(
+        text: string,
+        from: "me" | "other",
+        time: string,
+    ) {
+        const isMe = from === "me";
+        const messageHTML = `
+            <div class="flex ${isMe ? "justify-end" : "justify-start"} animate-fade-in-up">
+                <div class="max-w-[70%] sm:max-w-md">
+                    <div class="${isMe ? "bg-purple-700 rounded-br-md" : "bg-purple-900/40 rounded-bl-md"} backdrop-blur-xl px-4 py-2.5 rounded-2xl border border-purple-500/20">
+                        <p class="text-white text-sm break-words">${text}</p>
+                    </div>
+                    <p class="text-purple-400/40 text-xs mt-1 px-2 text-${isMe ? "right" : "left"}">${time}</p>
+                </div>
+            </div>
+        `;
+        chatMessages.insertAdjacentHTML("beforeend", messageHTML);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Enviar mensaje
+    messageForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = messageInput.value.trim();
+
+        if (!text || !currentChatRoomId) return;
+
+        // Limpiar input inmediatamente (optimistic)
+        messageInput.value = "";
+
+        // Agregar mensaje a la UI
+        appendMessageToUI(
+            text,
+            "me",
+            new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
+        );
+
+        try {
+            await matrixService.sendMessage(currentChatRoomId, text);
+        } catch (error) {
+            console.error("Error enviando mensaje", error);
+            // TODO: Mostrar indicador de error en el mensaje
+        }
+    });
+
+    // Abrir modal de nuevo chat
+    function openNewChatModal() {
+        newChatModal.classList.remove("hidden");
+        recipientInput.value = "";
+        hideModalError();
+    }
+
+    // Cerrar modal de nuevo chat
+    function closeNewChatModal() {
+        newChatModal.classList.add("hidden");
+    }
+
+    // Abrir modal de llave pública
+    function openPublicKeyModal() {
+        publicKeyModal.classList.remove("hidden");
+    }
+
+    // Cerrar modal de llave pública
+    function closePublicKeyModal() {
+        publicKeyModal.classList.add("hidden");
+    }
+
+    // Mostrar error en modal
+    function showModalError(message: string) {
+        modalErrorText.textContent = message;
+        modalError.classList.remove("hidden");
+    }
+
+    // Ocultar error en modal
+    function hideModalError() {
+        modalError.classList.add("hidden");
+    }
+
+    // Copiar al portapapeles
+    async function copyToClipboard(text: string, button: HTMLButtonElement) {
+        try {
+            await navigator.clipboard.writeText(text);
+            const originalHTML = button.innerHTML;
+            button.innerHTML =
+                '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+            }, 2000);
+        } catch (err) {
+            console.error("Error al copiar:", err);
+        }
+    }
+
+    // Event listeners de modales
+    newChatBtn?.addEventListener("click", openNewChatModal);
+    startChatBtn?.addEventListener("click", openNewChatModal);
+    closeModalBtn?.addEventListener("click", closeNewChatModal);
+    showPublicKeyBtn?.addEventListener("click", openPublicKeyModal);
+    closePublicKeyModalBtn?.addEventListener("click", closePublicKeyModal);
+
+    // Cerrar modal al hacer click fuera
+    newChatModal?.addEventListener("click", (e) => {
+        if (e.target === newChatModal) closeNewChatModal();
+    });
+    publicKeyModal?.addEventListener("click", (e) => {
+        if (e.target === publicKeyModal) closePublicKeyModal();
+    });
+
+    // Copiar alias
+    copyAliasBtn?.addEventListener("click", () => {
+        copyToClipboard(userAlias.textContent || "", copyAliasBtn);
+    });
+
+    // Copiar llave pública
+    copyPublicKeyBtn?.addEventListener("click", () => {
+        copyToClipboard(publicKeyDisplay.value, copyPublicKeyBtn);
+    });
+
+    // Formulario de nuevo chat
+    newChatForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const recipientData = recipientInput.value.trim();
+        if (!recipientData) {
+            showModalError("Por favor ingresa un alias o llave pública");
+            return;
+        }
+
+        // Estado de carga
+        connectButton.disabled = true;
+        connectButtonText.textContent = "Buscando...";
+        connectButtonIcon.classList.add("hidden");
+        connectLoadingIcon.classList.remove("hidden");
+        hideModalError();
+
+        try {
+            // 1. Buscar usuario en backend
+            const response = await fetch("/api/users/lookup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: recipientData }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al buscar usuario");
+            }
+
+            const data = await response.json();
+
+            if (!data.found || !data.synapse_user_id) {
+                throw new Error(data.message || "Usuario no encontrado");
+            }
+
+            connectButtonText.textContent = "Conectando...";
+
+            // 2. Crear sala en Matrix
+            const roomId = await matrixService.createDirectMessage(
+                data.synapse_user_id,
+            );
+
+            // Crear nuevo chat local
+            const newChat = {
+                roomId: roomId,
+                recipientAlias: data.alias || data.synapse_user_id,
+                recipientUserId: data.synapse_user_id,
+                recipientKey: data.public_key,
+            };
+
+            // Evitar duplicados
+            if (
+                !activeChats.find(
+                    (c) => c.recipientUserId === newChat.recipientUserId,
+                )
+            ) {
+                activeChats.push(newChat);
+                renderActiveChats();
+            }
+
+            // Cerrar modal y abrir chat
+            closeNewChatModal();
+            openChat(newChat);
+        } catch (error: any) {
+            showModalError(error.message || "Error al conectar con el usuario");
+        } finally {
+            connectButton.disabled = false;
+            connectButtonText.textContent = "Conectar";
+            connectButtonIcon.classList.remove("hidden");
+            connectLoadingIcon.classList.add("hidden");
+        }
+    });
+
+    // Logout
+    logoutButton?.addEventListener("click", async () => {
+        try {
+            // Obtener la llave pública para revocarla
+            const publicKey = authService.getPublicKey();
+
+            if (publicKey) {
+                // Revocar la llave pública en el servidor
+                await fetch("/api/keys/revoke", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ public_key: publicKey }),
+                });
+            }
+        } catch (error) {
+            console.error("Error al revocar llaves:", error);
+            // Continuar con el logout aunque falle la revocación
+        } finally {
+            // Hacer logout y redirigir
+            authService.logout();
+            window.location.href = "/login";
+        }
+    });
+
+    // Cargar información al iniciar
+    loadUserInfo();
+    renderActiveChats();
+</script>
+
+<style>
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-twinkle {
+        animation: twinkle 4s ease-in-out infinite;
+    }
+
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Scrollbar personalizado */
+    #usersList::-webkit-scrollbar,
+    #chatMessages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #usersList::-webkit-scrollbar-track,
+    #chatMessages::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+    }
+
+    #usersList::-webkit-scrollbar-thumb,
+    #chatMessages::-webkit-scrollbar-thumb {
+        background: rgba(147, 51, 234, 0.3);
+        border-radius: 3px;
+    }
+
+    #usersList::-webkit-scrollbar-thumb:hover,
+    #chatMessages::-webkit-scrollbar-thumb:hover {
+        background: rgba(147, 51, 234, 0.5);
+    }
+
+    /* Responsive: ocultar sidebar en móvil cuando hay chat activo */
+    @media (max-width: 1023px) {
+        #messageInputArea:not(.hidden) ~ * aside {
+            display: none;
+        }
+    }
+</style>

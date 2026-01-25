@@ -1,0 +1,34 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar e instalar dependencias
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Crear usuario no privilegiado para ejecutar la app
+RUN groupadd -r python && useradd --no-log-init -r -g python python
+
+# Copiar código fuente
+COPY . .
+
+# Ajustar permisos
+RUN chown -R python:python /app
+
+# Cambiar a usuario no privilegiado
+USER python
+
+# Exponer puerto
+EXPOSE 8000
+
+# Comando para ejecutar la aplicación (sin --reload en producción)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

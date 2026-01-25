@@ -1,0 +1,34 @@
+# (Builder)
+FROM node:iron-alpine3.22 AS builder
+WORKDIR /app
+
+# Copiar archivos de configuración
+COPY package*.json ./
+COPY . .
+
+# Construir el proyecto Astro
+RUN npm install
+RUN npm run build 
+
+# (Runner)
+# Usar una imagen Node.js ligera para solo ejecutar el runtime SSR.
+FROM node:iron-alpine3.22 AS runner
+WORKDIR /app
+
+# Copiar SOLO dependencias de producción (menos peso == mas liviano para prod)
+COPY package*.json ./
+# Para no instalar dependencias de desarrollo
+RUN npm install --omit=dev
+
+# Copiar la salida de la construcción desde la fase builder
+COPY --from=builder /app/dist ./dist
+
+# Exponer puerto
+EXPOSE 4321
+
+# Variables de entorno
+ENV HOST=0.0.0.0
+ENV PORT=4321
+
+# Ejecutar el servidor Astro standalone
+CMD ["node", "./dist/server/entry.mjs"]

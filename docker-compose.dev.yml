@@ -1,0 +1,193 @@
+#------------------------------------------------#
+# Docker Compose para DESARROLLO
+# El siguiente documento docker-compose.dev.yml
+# está configurado para orquestar una infra
+# dedicada a un servidor de mensajeria mediante
+# el uso de VPN, DB, WebApp y Proxy Inverso NGINX.
+# Se mantiene compatibilidad con SELINUX mediante
+# el uso de volumenes :Z en los mountpoints.
+#
+# Características de desarrollo:
+# - Hot reload activado
+# - Volúmenes montados para edición en vivo
+# - Backend ejecuta como root (SELinux)
+#-----------------------------------------------#
+
+services:
+  # 1. Base de Datos (MariaDB)
+  db:
+    image: mariadb:lts
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+    volumes:
+      # Volumen persistente nombrado 
+      # Para arc=ARM_64, revisar config de volumenes (puede dar problemas de permisos),
+      # ajustar PUID & GUID en "enviroment" para solucionarlo (EJ: PUID:1000 PGID:1000)
+      - db_data:/var/lib/mysql
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost", "--password=${DB_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    container_name: chatsender_db
+
+  # 1.5. Redis (Cache y mensajería temporal)
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    container_name: chatsender_redis
+
+  # 2. Servidor de Mensajería (Synapse)
+  synapse:
+    image: matrixdotorg/synapse:develop
+    restart: unless-stopped
+    environment:
+      SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME} # ej: chatsender.dominio.com
+      SYNAPSE_REPORT_STATS: "no"
+    volumes:
+      # Volumen persistente nombrado para datos de Synapse
+      - synapse_data:/data
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8008"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8008/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    container_name: chatsender_synapse
+
+  # 3. Backend de Lógica Personalizada (Python/Node)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DATABASE_URL: ${DATABASE_URL}
+      SYNAPSE_BASE_URL: ${SYNAPSE_BASE_URL}
+      SYNAPSE_ADMIN_TOKEN: ${SYNAPSE_ADMIN_TOKEN}
+      KEY_EXPIRATION_DAYS: ${KEY_EXPIRATION_DAYS}
+      SESSION_TIMEOUT_MINUTES: ${SESSION_TIMEOUT_MINUTES}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    volumes:
+      # Montaje de código del host, necesario para desarrollo
+      - ./backend:/app:Z
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      synapse:
+        condition: service_healthy
+    expose:
+      - "8000"
+    container_name: chatsender_backend
+
+  # 4. Frontend (ASTRO/Tailwind)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: "unless-stopped"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4321
+    volumes:
+      # Solo montamos src para hot reload, no todo el directorio
+      - ./frontend/src:/app/src:Z
+      - ./frontend/public:/app/public:Z
+    networks:
+      - internal
+    working_dir: /app
+    expose:
+      - "4321"
+    container_name: chatsender_frontend
+
+  # 5. Proxy Inverso (Nginx)
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      # Configuración de nginx con SELinux
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
+    ports:
+      - "80:80"
+    networks:
+      - internal
+    depends_on:
+      synapse:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    container_name: chatsender_nginx
+  #----------------------------#
+  #    Configurar a futuro
+  #----------------------------#
+
+  # 6. VPN (WireGuard) - Acceso Privado
+  vpn:
+    image: linuxserver/wireguard
+    container_name: wg_vpn
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Madrid
+      SERVERURL: ${VPN_SERVER_IP}
+      SERVERPORT: 51820
+      PEERS: 5
+      PEERDNS: auto
+      ALLOWEDIPS: 0.0.0.0/0 # Esto permite acceder a la red y tunelizar TODO el tráfico
+      LOG_CONFS: "true"
+    volumes:
+      - ./vpn/config:/config:Z
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - internal
+
+volumes:
+  synapse_data:
+  db_data:
+networks:
+  internal:
+    driver: bridge

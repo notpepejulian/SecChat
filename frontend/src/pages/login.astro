@@ -1,0 +1,565 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Login - ChatSender">
+    <div class="fixed inset-0 bg-black overflow-hidden -z-10">
+        <div
+            class="absolute top-0 left-0 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl opacity-40"
+        >
+        </div>
+        <div
+            class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-800/20 rounded-full blur-3xl opacity-30"
+        >
+        </div>
+
+        <div
+            class="absolute top-20 left-20 w-32 h-32 bg-purple-500/40 rounded-full blur-2xl animate-float"
+        >
+        </div>
+        <div
+            class="absolute bottom-32 right-1/4 w-24 h-24 bg-purple-600/40 rounded-full blur-xl animate-float"
+            style="animation-delay: 2s"
+        >
+        </div>
+
+        <div
+            class="absolute top-40 right-1/3 w-1 h-1 bg-white rounded-full animate-twinkle"
+        >
+        </div>
+        <div
+            class="absolute bottom-20 left-1/4 w-1.5 h-1.5 bg-purple-300 rounded-full animate-twinkle"
+            style="animation-delay: 1s"
+        >
+        </div>
+    </div>
+
+    <main class="relative min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-lg animate-fade-in-up">
+            <div class="text-center mb-8">
+                <div class="inline-flex relative group">
+                    <div
+                        class="absolute inset-0 bg-purple-600 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"
+                    >
+                    </div>
+                    <div
+                        class="relative p-4 bg-gradient-to-br from-purple-900/80 to-black rounded-2xl border border-purple-500/30 shadow-2xl animate-float"
+                    >
+                        <svg
+                            class="w-10 h-10 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+                <h1
+                    class="text-7xl font-black text-white mt-6 mb-2 tracking-tight"
+                >
+                    Acceso <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600"
+                        >Seguro</span
+                    >
+                </h1>
+                <p class="text-purple-200/50 text-lg">
+                    Introduce tus credenciales criptográficas para continuar
+                </p>
+            </div>
+
+            <div
+                class="relative bg-purple-900/10 backdrop-blur-xl border border-purple-500/20 rounded-3xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden"
+            >
+                <div
+                    class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"
+                >
+                </div>
+
+                <form id="loginForm" class="relative space-y-6">
+                    <div class="space-y-2">
+                        <label
+                            for="publicKey"
+                            class="block text-xs font-bold text-purple-300 uppercase tracking-wider ml-1"
+                        >
+                            Llave Pública
+                        </label>
+                        <div class="relative group">
+                            <textarea
+                                id="publicKey"
+                                rows="2"
+                                class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-xs font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 resize-none hover:bg-black/50"
+                                placeholder="Pegar llave pública..."
+                                required></textarea>
+                            <div
+                                class="absolute right-3 top-3 text-purple-500/30 group-hover:text-purple-400 transition-colors"
+                            >
+                                <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                                    ></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label
+                            for="privateKey"
+                            class="block text-xs font-bold text-purple-300 uppercase tracking-wider ml-1"
+                        >
+                            Llave Privada
+                        </label>
+                        <div class="relative group">
+                            <textarea
+                                id="privateKey"
+                                rows="3"
+                                class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-xs font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 resize-none hover:bg-black/50"
+                                placeholder="Pegar llave privada..."
+                                required></textarea>
+                            <div
+                                class="absolute right-3 top-3 text-purple-500/30 group-hover:text-purple-400 transition-colors"
+                            >
+                                <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                    ></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <p
+                            class="text-[13px] text-purple-400/50 flex items-center gap-1.5 ml-1 mt-1"
+                        >
+                            <span
+                                class="block w-1 h-1 rounded-full bg-green-500 animate-pulse"
+                            ></span>
+                            Chatea sin dar tus datos.
+                        </p>
+                    </div>
+
+                    <div id="errorMessage" class="hidden animate-fade-in-up">
+                        <div
+                            class="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl text-xs flex items-center gap-3"
+                        >
+                            <svg
+                                class="w-5 h-5 flex-shrink-0 text-red-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                            <span id="errorText">Error de autenticación</span>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="group relative w-full bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] overflow-hidden border border-purple-500/20"
+                    >
+                        <span
+                            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        ></span>
+                        <div class="flex items-center justify-center gap-2">
+                            <span id="buttonText">Desencriptar y Entrar</span>
+                            <svg
+                                id="buttonIcon"
+                                class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                            <svg
+                                id="loadingIcon"
+                                class="w-5 h-5 animate-spin hidden"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    class="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path
+                                    class="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                            </svg>
+                        </div>
+                    </button>
+
+                    <div class="relative">
+                        <div
+                            class="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-purple-500/10"
+                        >
+                        </div>
+                        <div
+                            class="relative flex justify-center text-xs uppercase tracking-widest text-purple-400/40 font-bold bg-transparent px-2"
+                        >
+                            O
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="toggleKeygen"
+                        class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-300 text-sm font-bold hover:bg-purple-500/20 hover:text-white transition-all duration-300"
+                    >
+                        Generar nuevas llaves ahora
+                    </button>
+
+                    <div
+                        id="keygenContainer"
+                        class="hidden animate-fade-in-up space-y-4 pt-4 border-t border-purple-500/10"
+                    >
+                        <div
+                            class="bg-black/40 border border-purple-500/20 rounded-2xl p-4 space-y-4"
+                        >
+                            <p
+                                class="text-xs text-purple-300/60 font-medium leading-relaxed"
+                            >
+                                Esto generará un nuevo par de llaves y las
+                                registrará automáticamente.
+                            </p>
+                            <button
+                                type="button"
+                                id="generateButton"
+                                class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                            >
+                                <span id="genBtnText">Generar y Usar</span>
+                                <svg
+                                    id="genLoadingIcon"
+                                    class="w-4 h-4 animate-spin hidden"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        class="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path
+                                        class="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                </svg>
+                            </button>
+
+                            <div
+                                id="genResult"
+                                class="hidden space-y-3 animate-fade-in-up"
+                            >
+                                <div
+                                    class="p-3 bg-purple-900/20 rounded-lg border border-purple-500/30"
+                                >
+                                    <p
+                                        class="text-[10px] uppercase font-bold text-purple-400 mb-1"
+                                    >
+                                        Llave Privada (Guárdala bien):
+                                    </p>
+                                    <div class="flex items-center gap-2">
+                                        <code
+                                            id="genPrivText"
+                                            class="text-[10px] text-purple-200 font-mono flex-1 break-all bg-black/40 p-2 rounded border border-purple-500/20 overflow-x-auto max-h-20"
+                                        ></code>
+                                        <button
+                                            type="button"
+                                            id="copyGenPriv"
+                                            class="p-2 text-purple-400 hover:text-white transition-colors"
+                                        >
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                ><path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                                ></path></svg
+                                            >
+                                        </button>
+                                    </div>
+                                </div>
+                                <p
+                                    class="text-[11px] text-green-400/80 font-medium"
+                                >
+                                    Las llaves se han copiado arriba para que
+                                    puedas entrar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div
+                    class="mt-8 pt-6 border-t border-purple-500/10 flex justify-center items-center text-s"
+                >
+                    <a
+                        href="/"
+                        class="text-purple-400/60 hover:text-white transition-colors"
+                    >
+                        Volver al inicio</a
+                    >
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    import { authService } from "../services/authService";
+
+    const form = document.getElementById("loginForm") as HTMLFormElement;
+    const publicKeyInput = document.getElementById(
+        "publicKey",
+    ) as HTMLTextAreaElement;
+    const privateKeyInput = document.getElementById(
+        "privateKey",
+    ) as HTMLTextAreaElement;
+    const loginButton = document.getElementById(
+        "loginButton",
+    ) as HTMLButtonElement;
+    const buttonText = document.getElementById("buttonText") as HTMLSpanElement;
+    const buttonIcon = document.getElementById(
+        "buttonIcon",
+    ) as unknown as SVGElement;
+    const loadingIcon = document.getElementById(
+        "loadingIcon",
+    ) as unknown as SVGElement;
+    const errorMessage = document.getElementById(
+        "errorMessage",
+    ) as HTMLDivElement;
+    const errorText = document.getElementById("errorText") as HTMLSpanElement;
+
+    // Keygen elements
+    const toggleKeygen = document.getElementById(
+        "toggleKeygen",
+    ) as HTMLButtonElement;
+    const keygenContainer = document.getElementById(
+        "keygenContainer",
+    ) as HTMLDivElement;
+    const generateButton = document.getElementById(
+        "generateButton",
+    ) as HTMLButtonElement;
+    const genBtnText = document.getElementById("genBtnText") as HTMLSpanElement;
+    const genLoadingIcon = document.getElementById(
+        "genLoadingIcon",
+    ) as unknown as SVGElement;
+    const genResult = document.getElementById("genResult") as HTMLDivElement;
+    const genPrivText = document.getElementById("genPrivText") as HTMLElement;
+    const copyGenPriv = document.getElementById(
+        "copyGenPriv",
+    ) as HTMLButtonElement;
+
+    toggleKeygen?.addEventListener("click", () => {
+        keygenContainer?.classList.toggle("hidden");
+        toggleKeygen.textContent = keygenContainer?.classList.contains("hidden")
+            ? "Generar nuevas llaves ahora"
+            : "Ocultar generador";
+    });
+
+    generateButton?.addEventListener("click", async () => {
+        generateButton.disabled = true;
+        genBtnText.textContent = "Generando...";
+        genLoadingIcon.classList.remove("hidden");
+        hideError();
+
+        try {
+            const res = await fetch("/api/keys/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ count: 1 }),
+            });
+            const data = await res.json();
+
+            if (data.keys && data.keys[0]) {
+                const key = data.keys[0];
+                publicKeyInput.value = key.public_key;
+                privateKeyInput.value = key.private_key;
+
+                genPrivText.textContent = key.private_key;
+                genResult.classList.remove("hidden");
+
+                copyGenPriv.onclick = () => {
+                    navigator.clipboard.writeText(key.private_key);
+                    const originalHTML = copyGenPriv.innerHTML;
+                    copyGenPriv.innerHTML =
+                        '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                    setTimeout(
+                        () => (copyGenPriv.innerHTML = originalHTML),
+                        2000,
+                    );
+                };
+            }
+        } catch (error) {
+            showError("Error al generar llaves desde el servidor.");
+        } finally {
+            generateButton.disabled = false;
+            genBtnText.textContent = "Generar y Usar";
+            genLoadingIcon.classList.add("hidden");
+        }
+    });
+
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const publicKey = publicKeyInput.value.trim();
+        const privateKey = privateKeyInput.value.trim();
+
+        if (!publicKey || !privateKey) {
+            showError("Ambas llaves son requeridas para la autenticación.");
+            return;
+        }
+
+        loginButton.disabled = true;
+        buttonText.textContent = "Verificando firma...";
+        buttonIcon.classList.add("hidden");
+        loadingIcon.classList.remove("hidden");
+        hideError();
+        loginButton.classList.add("opacity-80", "cursor-not-allowed");
+
+        try {
+            authService.setPublicKey(publicKey);
+            const [result] = await Promise.all([
+                authService.login(privateKey),
+                new Promise((resolve) => setTimeout(resolve, 800)),
+            ]);
+
+            if (result.success) {
+                buttonText.textContent = "Acceso Concedido";
+                loadingIcon.classList.add("hidden");
+                loginButton.classList.remove(
+                    "from-purple-700",
+                    "to-purple-900",
+                );
+                loginButton.classList.add("from-green-600", "to-green-700");
+                window.location.href = "/chat";
+            } else {
+                throw new Error(result.error || "Credenciales inválidas");
+            }
+        } catch (error: any) {
+            showError(error.message || "Error de conexión");
+            resetButton();
+        }
+    });
+
+    function resetButton() {
+        loginButton.disabled = false;
+        buttonText.textContent = "Desencriptar y Entrar";
+        loadingIcon.classList.add("hidden");
+        buttonIcon.classList.remove("hidden");
+        loginButton.classList.remove("opacity-80", "cursor-not-allowed");
+    }
+
+    function showError(message: string) {
+        errorText.textContent = message;
+        errorMessage.classList.remove("hidden");
+        errorMessage.animate(
+            [
+                { transform: "translateX(0)" },
+                { transform: "translateX(-5px)" },
+                { transform: "translateX(5px)" },
+                { transform: "translateX(0)" },
+            ],
+            { duration: 300 },
+        );
+    }
+
+    function hideError() {
+        errorMessage.classList.add("hidden");
+    }
+
+    if (authService.isAuthenticated()) {
+        window.location.href = "/chat";
+    }
+</script>
+
+<style>
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-twinkle {
+        animation: twinkle 4s ease-in-out infinite;
+    }
+
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+</style>
