@@ -1,322 +1,114 @@
-# ChatSender - Servidor de Mensajería Local
+# ChatSender
 
-Servidor de mensajería privado basado en Matrix Synapse con interfaz web Astro, backend FastAPI y base de datos MariaDB, todo orquestado con Docker Compose.
+[![Status](https://img.shields.io/badge/Status-Development-orange?style=for-the-badge)](https://github.com/your-repo)
+[![Docker](https://img.shields.io/badge/Orchestration-Docker-blue?style=for-the-badge)](https://www.docker.com/)
 
-## 🏗️ Arquitectura
+**ChatSender** is a high-performance, private messaging orchestrator built on **Matrix Synapse**. It provides a secure bridge between a modern **FastAPI** backend and a reactive **Astro** frontend, all secured within a self-hosted infrastructure.
 
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+---
+
+## Architecture
+
+The system follows a microservices architecture orchestrated by Docker, ensuring isolation and scalability.
+
+```mermaid
+graph TD
+    Client[Web Browser] -->|HTTP/80| Nginx[Nginx Reverse Proxy]
+    
+    subgraph "Docker Infrastructure"
+        Nginx -->|/| Frontend[Astro Frontend]
+        Nginx -->|/api| Backend[FastAPI Backend]
+        Nginx -->|/_matrix| Synapse[Matrix Synapse]
+        
+        Backend -->|SQL| MariaDB[(MariaDB)]
+        Backend -->|Auth| Synapse
+        Backend -->|Cache| Redis([Redis])
+        
+        Synapse -->|SQL| MariaDB
+        
+        subgraph "Security Layer"
+            VPN[WireGuard VPN]
+        end
+    end
 ```
-┌─────────────┐
-│   Nginx     │  Puerto 80 (Proxy Inverso)
-│   (Alpine)  │
-└──────┬──────┘
-       │
-       ├───────────────────┬────────────────────┬─────────────────┐
-       │                   │                    │                 │
-┌──────▼──────┐    ┌───────▼────────┐   ┌──────▼──────┐  ┌──────▼──────┐
-│  Frontend   │    │    Backend     │   │   Synapse   │  │   MariaDB   │
-│   (Astro)   │    │   (FastAPI)    │   │   (Matrix)  │  │     (DB)    │
-│  Puerto 4321│    │   Puerto 8000  │   │ Puerto 8008 │  │ Puerto 3306 │
-└─────────────┘    └────────────────┘   └─────────────┘  └─────────────┘
-```
 
-## 📋 Requisitos Previos
+---
 
-- Docker >= 24.0
-- Docker Compose >= 2.20
-- Sistema operativo con soporte SELinux (Fedora, RHEL, CentOS) o sin él
+## Key Features
 
-##  Inicio Rápido
+- **End-to-End Privacy**: Fully self-hosted Matrix instance.
+- **Challenge-Response Auth**: Ed25519 cryptographic authentication.
+- **Modern Stack**: Astro + TailwindCSS for a premium UI experience.
+- **Developer First**: Hot-reload enabled for both frontend and backend.
+- **Hardened Security**: Pre-configured SELinux support and VPN integration.
 
-### 1. Clonar el repositorio
+---
 
+## Getting Started
+
+### 1. Requirements
+Ensure you have the following installed:
+- **Docker** >= 24.0
+- **Docker Compose** >= 2.20
+
+### 2. Initialization
 ```bash
-git clone <tu-repositorio>
+# Clone the repository
+git clone <chatsender-repository>
 cd ChatSender
+
+# Setup environment variables
+cat .env.example
+# Edit .env with your credentials
 ```
 
-### 2. Configurar variables de entorno
-
-```bash
-cp .env.example .env
-# Edita .env con tus credenciales seguras
-nano .env
-```
-
-### 3. Inicializar Synapse (primera vez)
-
+### 3. Matrix Setup (First Run Only)
 ```bash
 cd synapse
 ./init-synapse.sh
 ```
+> [!IMPORTANT]
+> Configure your `homeserver.yaml` to point to the MariaDB instance as documented in the internal Wiki.
 
-Luego configura el archivo `homeserver.yaml` para usar MariaDB:
-
+### 4. Deployment
 ```bash
-docker run --rm -it -v chatsender_synapse_data:/data alpine sh
-# Dentro del contenedor:
-cd /data
-vi homeserver.yaml
-```
-
-Busca la sección `database:` y reemplázala con:
-
-```yaml
-database:
-  name: psycopg2
-  args:
-    user: synapse_user
-    password: <tu_DB_PASSWORD_del_.env>
-    database: synapse
-    host: db
-    port: 3306
-    cp_min: 5
-    cp_max: 10
-```
-
-### 4. Levantar los servicios
-
-```bash
-# Desarrollo (por defecto)
-docker-compose up -d
-# O explícitamente
-docker-compose -f docker-compose.dev.yml up -d
-
-# Producción
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-### 5. Verificar el estado
-
-```bash
-docker-compose ps
-docker-compose logs -f
-```
-
-## 🔧 Servicios
-
-### MariaDB (Base de Datos)
-- **Puerto interno**: 3306
-- **Usuario**: `synapse_user`
-- **Base de datos**: `synapse`
-- **Healthcheck**: Verifica conexión cada 10s
-
-### Synapse (Matrix Server)
-- **Puerto interno**: 8008
-- **Servidor**: `fed.local`
-- **Endpoints**: `/_matrix/*`, `/_synapse/*`
-- **Healthcheck**: `/health` cada 30s
-
-### Backend (FastAPI)
-- **Puerto interno**: 8000
-- **Endpoints**: `/api/*`
-- **Características**:
-  - Hot reload en desarrollo
-  - Conexión a MariaDB vía SQLAlchemy
-  - Cliente HTTP para comunicación con Synapse
-  - Healthcheck: `/health`
-
-### Frontend (Astro)
-- **Puerto interno**: 4321
-- **Modo**: Desarrollo con HMR
-- **Hot Module Replacement**: Soportado vía WebSocket
-
-### Nginx (Proxy Inverso)
-- **Puerto externo**: 80
-- **Rutas**:
-  - `/` → Frontend
-  - `/api/*` → Backend
-  - `/_matrix/*` → Synapse
-  - `/_synapse/*` → Synapse (Admin API)
-  - `/.well-known/matrix/*` → Autodescubrimiento Matrix
-
-##  Comandos Útiles
-
-### Ver logs de todos los servicios
-```bash
-# Desarrollo
-docker-compose logs -f
-# Producción
-docker-compose -f docker-compose.prod.yml logs -f
-```
-
-### Ver logs de un servicio específico
-```bash
-docker-compose logs -f backend
-docker-compose logs -f synapse
-```
-
-### Reiniciar un servicio
-```bash
-docker-compose restart backend
-```
-
-### Reconstruir imágenes
-```bash
-docker-compose build --no-cache
+# Start development environment
 docker-compose up -d
 ```
 
-### Detener todos los servicios
-```bash
-docker-compose down
-```
+---
 
-### Detener y eliminar volúmenes
-```bash
-docker-compose down -v
-```
+## Key Management
 
-### Acceder al shell de un contenedor
-```bash
-docker-compose exec backend bash
-docker-compose exec db mariadb -u synapse_user -p
-```
+ChatSender uses Ed25519 key pairs for secure access. Use the included helper script to manage keys:
 
-### Probar endpoints
+| Command | Action |
+| :--- | :--- |
+| `./keygen.sh generate [n]` | Generate `n` new key pairs and register them (used for testing). |
+| `./keygen.sh list` | List all authorized public keys. |
+| `./keygen.sh revoke <prefix>` | Immediately revoke access for a key. |
 
-```bash
-# Backend health
-curl http://localhost/api/health
+> [!CAUTION]
+> Never share your **Private Key**. It is used to sign authentication challenges locally in your browser and is never sent to the server.
 
-# Verificar conexión DB
-curl http://localhost/api/db-status
+---
 
-# Verificar conexión Synapse
-curl http://localhost/api/synapse-version
+## Infrastructure Overview
 
-# Synapse versions endpoint
-curl http://localhost/_matrix/client/versions
-```
+| Service | Port | Description |
+| :--- | :--- | :--- |
+| **Nginx** | 80 | Entry point & load balancer. |
+| **Frontend** | 4321 | Reactive UI (Astro/Tailwind). |
+| **Backend** | 8000 | Business logic & Synapse bridge. |
+| **Synapse** | 8008 | Core Matrix server. |
+| **MariaDB** | 3306 | Persistent storage. |
+| **WireGuard**| 51820 | Secure remote access. |
 
-##  Estructura del Proyecto
+---
 
-```
-ChatSender/
-├── backend/
-│   ├── Dockerfile.dev
-│   ├── Dockerfile.prod
-│   ├── requirements.txt
-│   └── main.py
-├── frontend/
-│   ├── Dockerfile.dev
-│   ├── Dockerfile.prod
-│   └── package.json
-├── nginx/
-│   └── conf.d/
-│       └── nginx.conf
-├── synapse/
-│   └── init-synapse.sh
-├── mariadb/
-├── vpn/
-├── docker-compose.yml -> docker-compose.dev.yml (symlink)
-├── docker-compose.dev.yml
-├── docker-compose.prod.yml
-├── deploy.sh
-├── Makefile
-├── .env
-└── .env.example
-```
+## License
 
-## 🔒 Seguridad
-
-### SELinux
-El proyecto está configurado para funcionar con SELinux usando:
-- Volúmenes con flag `:Z` para contexto privado
-- Volúmenes con flag `:z` para contexto compartido
-
-### Desarrollo vs Producción
-
-**Desarrollo (actual)**:
-- Backend ejecuta como root para compatibilidad con volúmenes montados
-- Frontend en modo desarrollo con HMR
-- No hay SSL/TLS (solo HTTP)
-
-**Producción (recomendado)**:
-1. Cambiar Dockerfile del backend para usar usuario no privilegiado
-2. Usar `Dockerfile.prod` para el frontend
-3. Configurar Nginx con SSL/TLS (Let's Encrypt)
-4. No montar volúmenes de código fuente
-5. Usar secrets de Docker para credenciales
-6. Activar VPN (WireGuard)
-
-##  VPN (WireGuard)
-
-La configuración de WireGuard está comentada en `docker-compose.yml`. Para activarla:
-
-1. Descomentar la sección `vpn` en el archivo
-2. Configurar la variable `VPN_SERVER_IP` en `.env`
-3. Ajustar permisos y módulos del kernel:
-
-```bash
-sudo modprobe wireguard
-```
-
-4. Levantar el servicio:
-
-```bash
-docker-compose up -d vpn
-```
-
-5. Los archivos de configuración de peers estarán en `./vpn/config/`
-
-## 🐛 Troubleshooting
-
-### Error: "Permission denied" en volúmenes
-- **Causa**: SELinux bloqueando acceso
-- **Solución**: Verificar que los volúmenes usan `:Z` o `:z`
-
-### Synapse no inicia
-- **Causa**: Falta configuración inicial o DB no conectada
-- **Solución**: Ejecutar `./synapse/init-synapse.sh` y configurar homeserver.yaml
-
-### Backend no conecta a MariaDB
-- **Causa**: Variables de entorno incorrectas o DB no healthy
-- **Solución**: Verificar `.env` y esperar a que MariaDB esté healthy
-
-### Frontend no accesible
-- **Causa**: No está en la red `internal`
-- **Solución**: Verificar que docker-compose.yml incluye `networks: - internal`
-
-### Nginx 502 Bad Gateway
-- **Causa**: Servicios backend no están listos
-- **Solución**: Esperar a que todos los healthchecks estén OK
-
-```bash
-docker-compose ps
-```
-
-## 📊 Monitoreo
-
-### Estado de healthchecks
-```bash
-docker ps --format "table {{.Names}}\t{{.Status}}"
-```
-
-### Uso de recursos
-```bash
-docker stats
-```
-
-### Logs en tiempo real
-```bash
-docker-compose logs -f --tail=100
-```
-
-## 🚧 Próximas Mejoras
-
-- [ ] Implementar autenticación JWT en el backend
-- [ ] Añadir rate limiting en Nginx
-- [ ] Configurar backups automáticos de MariaDB
-- [ ] Implementar monitoreo con Prometheus + Grafana
-- [ ] Añadir soporte para SSL/TLS
-- [ ] Documentar API del backend con Swagger/OpenAPI
-- [ ] Implementar tests automatizados
-- [ ] CI/CD con GitHub Actions
-
-## 📝 Licencia
-
-[Tu licencia aquí]
-
-## 👥 Contribución
-
-[Instrucciones de contribución aquí]
+The project is open source and available under the MIT License. See the [LICENSE](LICENSE) file for more information. 
