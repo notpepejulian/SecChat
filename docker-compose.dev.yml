@@ -157,37 +157,67 @@ services:
   #    Configurar a futuro
   #----------------------------#
 
-  # 6. VPN (WireGuard) - Acceso Privado
-  vpn:
-    image: linuxserver/wireguard
-    container_name: wg_vpn
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
+  # 6. VPN (Tailscale) - Acceso Privado
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: chatsender_tailscale
+    hostname: chatsender-dev
+    entrypoint: /bin/sh -c "ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables && ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables && exec /usr/local/bin/containerboot" #Esto es para que funcione en sistemas con kernel 5.10+ (Linux está migrando de iptables legacy a nftables y tailscale no soporta todavía nftables en las imagenes que hay)
     environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/Madrid
-      SERVERURL: ${VPN_SERVER_IP}
-      SERVERPORT: 51820
-      PEERS: 5
-      PEERDNS: auto
-      ALLOWEDIPS: 0.0.0.0/0 # Esto permite acceder a la red y tunelizar TODO el tráfico
-      LOG_CONFS: "true"
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-routes=172.18.0.0/16
     volumes:
-      - ./vpn/config:/config:Z
+      - tailscale_data:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
       - /lib/modules:/lib/modules:ro
-    ports:
-      - 51820:51820/udp
+    privileged: true
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
     sysctls:
       - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
       - internal
+  # 6. VPN (WireGuard) - Acceso Privado (Comentado)
+  # vpn:
+  #   image: linuxserver/wireguard
+  #   container_name: wg_vpn
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - SYS_MODULE
+  #   environment:
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: Europe/Madrid
+  #     SERVERURL: ${VPN_SERVER_IP}
+  #     SERVERPORT: 51820
+  #     PEERS: 5
+  #     PEERDNS: auto
+  #     ALLOWEDIPS: 0.0.0.0/0 # Esto permite acceder a la red y tunelizar TODO el tráfico
+  #     LOG_CONFS: "true"
+  #   volumes:
+  #     - ./vpn/config:/config:Z
+  #     - /lib/modules:/lib/modules:ro
+  #   ports:
+  #     - 51820:51820/udp
+  #   sysctls:
+  #     - net.ipv4.ip_forward=1
+  #     - net.ipv4.conf.all.src_valid_mark=1
+  #   networks:
+  #     - internal
 
 volumes:
   synapse_data:
   db_data:
+  tailscale_data:
 networks:
   internal:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
