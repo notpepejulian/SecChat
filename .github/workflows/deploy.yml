@@ -36,7 +36,7 @@ jobs:
       - name: Validar Build (Pre-producción)
         run: |
           echo "Validando el build del proyecto antes de producción..."
-          docker-compose -f docker-compose.dev.yml build
+          docker compose -f docker-compose.prod.yml build
 
   # 3. Rama main: Entorno de producción (Release automático)
   production-release:
@@ -54,7 +54,7 @@ jobs:
       - name: Validar Build de Producción
         run: |
           echo "Asegurando que el contenido de producción compila correctamente..."
-          docker-compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml build
 
       - name: Crear Archivo ZIP del Proyecto
         run: |
