@@ -1,0 +1,76 @@
+name: Project Workflow (Dev, Pre, Main)
+
+on:
+  push:
+    branches:
+      - dev
+      - pre
+      - main
+
+jobs:
+  # 1. Rama dev: Entorno de desarrollo (no hace el build)
+  dev-validation:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Validación de archivos (en crudo)
+        run: |
+          echo "Ejecutando validaciones básicas en la rama dev..."
+          # Aquí podrías añadir linters si fuera necesario en el futuro
+          ls -R
+
+  # 2. Rama pre: Entorno de pruebas (con compilación/build)
+  pre-validation:
+    if: github.ref == 'refs/heads/pre'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validar Build (Pre-producción)
+        run: |
+          echo "Validando el build del proyecto antes de producción..."
+          docker compose -f docker-compose.prod.yml build
+
+  # 3. Rama main: Entorno de producción (Release automático)
+  production-release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validar Build de Producción
+        run: |
+          echo "Asegurando que el contenido de producción compila correctamente..."
+          docker compose -f docker-compose.prod.yml build
+
+      - name: Crear Archivo ZIP del Proyecto
+        run: |
+          zip -r chatsender-v1.0.${{ github.run_number }}.zip . -x "*.git*" "node_modules/*" "*.old" "__pycache__/*"
+
+      - name: Crear Release de GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          body: |
+            Release automático generado desde la rama main.
+            Build validado correctamente.
+          draft: false
+          prerelease: false
+          files: |
+            chatsender-v1.0.${{ github.run_number }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

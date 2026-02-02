@@ -183,34 +183,7 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
       - internal
-  # 6. VPN (WireGuard) - Acceso Privado (Comentado)
-  # vpn:
-  #   image: linuxserver/wireguard
-  #   container_name: wg_vpn
-  #   cap_add:
-  #     - NET_ADMIN
-  #     - SYS_MODULE
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/Madrid
-  #     SERVERURL: ${VPN_SERVER_IP}
-  #     SERVERPORT: 51820
-  #     PEERS: 5
-  #     PEERDNS: auto
-  #     ALLOWEDIPS: 0.0.0.0/0 # Esto permite acceder a la red y tunelizar TODO el tráfico
-  #     LOG_CONFS: "true"
-  #   volumes:
-  #     - ./vpn/config:/config:Z
-  #     - /lib/modules:/lib/modules:ro
-  #   ports:
-  #     - 51820:51820/udp
-  #   sysctls:
-  #     - net.ipv4.ip_forward=1
-  #     - net.ipv4.conf.all.src_valid_mark=1
-  #   networks:
-  #     - internal
-
+      
 volumes:
   synapse_data:
   db_data:
