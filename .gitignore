@@ -1,12 +1,13 @@
 # Environment
 .env
-# Note: .env.example is tracked in git
+.env.production
+.env.example
 
 # Docker Compose
 # Note: docker-compose.yml is a symlink to docker-compose.dev.yml
-# Both .dev.yml and .prod.yml are tracked
+docker-compose.yml
 
-# Node Modules
+# Dependencies
 node_modules/
 
 # Docker volumes data
@@ -15,34 +16,26 @@ mariadb_data/
 vpn/config/*
 
 # Github Actions
-.github/workflows/deploy.yml
+.github/workflows/deploy.yml.old
 
-.vscode
+# IDEs
+.vscode/
+.idea/
 
-# build output
+# Build outputs
 dist/
-
-# generated types
+**/dist/
 .astro/
+**/node_modules/
 
-# dependencies
-node_modules/
-
-# logs
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
+# OS-specific files
 .DS_Store
 
-# jetbrains setting folder
-.idea/
-
-#scripts
-.sh
+# Scripts
+*.sh
