@@ -1,9 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128">
-    <path d="M50.4 78.5a75.1 75.1 0 0 0-28.5 6.9l24.2-65.7c.7-2 1.9-3.2 3.4-3.2h29c1.5 0 2.7 1.2 3.4 3.2l24.2 65.7s-11.6-7-28.5-7L67 45.5c-.4-1.7-1.6-2.8-2.9-2.8-1.3 0-2.5 1.1-2.9 2.7L50.4 78.5Zm-1.1 28.2Zm-4.2-20.2c-2 6.6-.6 15.8 4.2 20.2a17.5 17.5 0 0 1 .2-.7 5.5 5.5 0 0 1 5.7-4.5c2.8.1 4.3 1.5 4.7 4.7.2 1.1.2 2.3.2 3.5v.4c0 2.7.7 5.2 2.2 7.4a13 13 0 0 0 5.7 4.9v-.3l-.2-.3c-1.8-5.6-.5-9.5 4.4-12.8l1.5-1a73 73 0 0 0 3.2-2.2 16 16 0 0 0 6.8-11.4c.3-2 .1-4-.6-6l-.8.6-1.6 1a37 37 0 0 1-22.4 2.7c-5-.7-9.7-2-13.2-6.2Z" />
-    <style>
-        path { fill: #000; }
-        @media (prefers-color-scheme: dark) {
-            path { fill: #FFF; }
-        }
-    </style>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Deep Purple Web Gradient -->
+    <linearGradient id="deep-purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E1065" />
+      <stop offset="50%" stop-color="#0F0014" />
+      <stop offset="100%" stop-color="#581C87" />
+    </linearGradient>
+
+    <!-- Neon Accent Gradient -->
+    <linearGradient id="neon-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="100%" stop-color="#A855F7" />
+    </linearGradient>
+
+    <!-- Sharp Glow Filter -->
+    <filter id="web-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feFlood flood-color="#A855F7" flood-opacity="0.5" result="color" />
+      <feComposite in="color" in2="blur" operator="in" result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Shadow for Depth -->
+    <filter id="deep-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <!-- Max-Scale Background Shape -->
+  <path d="M490 256C490 385.235 385.235 490 256 490C228.5 490 202.4 485.1 178.2 476.2L22 512L61.2 402C26.5 361 7 308.5 7 251.4C7 122.165 111.765 17.4 241 17.4C370.235 17.4 490 126.765 490 256Z" 
+        fill="url(#deep-purple-grad)" filter="url(#deep-shadow)" />
+
+  <!-- Outer Neon Rim -->
+  <path d="M490 256C490 385.235 385.235 490 256 490C228.5 490 202.4 485.1 178.2 476.2L22 512L61.2 402C26.5 361 7 308.5 7 251.4C7 122.165 111.765 17.4 241 17.4C370.235 17.4 490 126.765 490 256Z" 
+        stroke="url(#neon-accent)" stroke-width="10" stroke-opacity="0.9" filter="url(#web-glow)" stroke-linejoin="round" />
+
+  <!-- High-Contrast Lock -->
+  <g transform="translate(250, 295) scale(1.4)">
+    <!-- Base Body -->
+    <rect x="-45" y="-35" width="90" height="70" rx="14" fill="white" />
+    <!-- Symbolic Keyhole -->
+    <rect x="-3" y="-5" width="6" height="15" rx="3" fill="#0F0014" />
+    <!-- Polished Shackle -->
+    <path d="M-28 -35V-62C-28 -77.5 -15.5 -90 0 -90C15.5 -90 28 -77.5 28 -62V-35" 
+          stroke="white" stroke-width="16" stroke-linecap="round" />
+  </g>
 </svg>
