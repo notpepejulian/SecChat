@@ -1,134 +1,603 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="ChatSender - Tu Espacio Privado en la Red">
 	<div class="fixed inset-0 bg-black overflow-hidden -z-10">
-		<div class="absolute top-0 left-0 w-96 h-96 bg-purple-600/40 rounded-full blur-3xl opacity-50"></div>
-		<div class="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-500/30 rounded-full blur-3xl opacity-40"></div>
-		<div class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-purple-700/30 rounded-full blur-3xl opacity-40"></div>
-		<div class="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-600/25 rounded-full blur-3xl opacity-30"></div>
-		
-		<div class="absolute top-32 left-1/3 w-24 h-24 bg-purple-500/60 rounded-full blur-xl animate-float"></div>
-		<div class="absolute top-1/2 right-1/3 w-32 h-32 bg-purple-600/50 rounded-full blur-2xl animate-float" style="animation-delay: 1.5s"></div>
-		<div class="absolute bottom-40 left-1/2 w-20 h-20 bg-purple-700/60 rounded-full blur-xl animate-pulse-slow"></div>
-		
-		<div class="absolute top-40 left-1/4 w-1 h-1 bg-purple-200 rounded-full animate-twinkle"></div>
-		<div class="absolute top-60 right-1/3 w-1.5 h-1.5 bg-white rounded-full animate-twinkle" style="animation-delay: 1s"></div>
-		<div class="absolute top-1/3 left-1/2 w-1 h-1 bg-purple-300 rounded-full animate-twinkle" style="animation-delay: 2s"></div>
-		<div class="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-white rounded-full animate-twinkle" style="animation-delay: 0.5s"></div>
+		<div
+			class="absolute top-0 left-0 w-96 h-96 bg-purple-600/40 rounded-full blur-3xl opacity-50"
+		>
+		</div>
+		<div
+			class="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-500/30 rounded-full blur-3xl opacity-40"
+		>
+		</div>
+		<div
+			class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-purple-700/30 rounded-full blur-3xl opacity-40"
+		>
+		</div>
+		<div
+			class="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-600/25 rounded-full blur-3xl opacity-30"
+		>
+		</div>
+
+		<div
+			class="absolute top-32 left-1/3 w-24 h-24 bg-purple-500/60 rounded-full blur-xl animate-float"
+		>
+		</div>
+		<div
+			class="absolute top-1/2 right-1/3 w-32 h-32 bg-purple-600/50 rounded-full blur-2xl animate-float"
+			style="animation-delay: 1.5s"
+		>
+		</div>
+		<div
+			class="absolute bottom-40 left-1/2 w-20 h-20 bg-purple-700/60 rounded-full blur-xl animate-pulse-slow"
+		>
+		</div>
+
+		<div
+			class="absolute top-40 left-1/4 w-1 h-1 bg-purple-200 rounded-full animate-twinkle"
+		>
+		</div>
+		<div
+			class="absolute top-60 right-1/3 w-1.5 h-1.5 bg-white rounded-full animate-twinkle"
+			style="animation-delay: 1s"
+		>
+		</div>
+		<div
+			class="absolute top-1/3 left-1/2 w-1 h-1 bg-purple-300 rounded-full animate-twinkle"
+			style="animation-delay: 2s"
+		>
+		</div>
+		<div
+			class="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-white rounded-full animate-twinkle"
+			style="animation-delay: 0.5s"
+		>
+		</div>
 	</div>
 
-	<main class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-8 py-12 overflow-hidden">
-		
-		<div class="w-full max-w-6xl mx-auto flex flex-col items-center text-center z-10">
-			
-			<div class="animate-fade-in-up opacity-0" style="animation-delay: 0.1s;">
-				<div class="inline-flex items-center gap-2 px-4 py-2 bg-purple-900/30 border border-purple-500/30 rounded-full mb-8 backdrop-blur-md shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:bg-purple-900/40 transition-colors cursor-default">
+	<main
+		class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-8 py-12 overflow-hidden"
+	>
+		<div
+			class="w-full max-w-6xl mx-auto flex flex-col items-center text-center z-10"
+		>
+			<div
+				class="animate-fade-in-up opacity-0"
+				style="animation-delay: 0.1s;"
+			>
+				<div
+					class="inline-flex items-center gap-2 px-4 py-2 bg-purple-900/30 border border-purple-500/30 rounded-full mb-8 backdrop-blur-md shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:bg-purple-900/40 transition-colors cursor-default"
+				>
 					<span class="relative flex h-2 w-2">
-					  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-					  <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+						<span
+							class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
+						></span>
+						<span
+							class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"
+						></span>
 					</span>
-					<span class="text-purple-300 text-xs font-bold tracking-wide uppercase">Beta Privada Activa</span>
+					<span
+						class="text-purple-300 text-xs font-bold tracking-wide uppercase"
+						>Beta Privada Activa</span
+					>
 				</div>
 			</div>
 
-			<h1 class="text-6xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tight animate-fade-in-up opacity-0" style="animation-delay: 0.2s;">
-				Tu Espacio <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">Privado</span><br/>
+			<h1
+				class="text-6xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tight animate-fade-in-up opacity-0"
+				style="animation-delay: 0.2s;"
+			>
+				Tu Espacio <span
+					class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600"
+					>Privado</span
+				><br />
 				en la Red.
 			</h1>
 
-			<p class="text-xl md:text-2xl text-purple-200/80 mb-10 max-w-2xl font-light animate-fade-in-up opacity-0" style="animation-delay: 0.3s;">
-				Comunícate sin dejar huella digital. Encriptación E2E y chats donde tu privacidad es nuestra única prioridad.
+			<p
+				class="text-xl md:text-2xl text-purple-200/80 mb-10 max-w-2xl font-light animate-fade-in-up opacity-0"
+				style="animation-delay: 0.3s;"
+			>
+				Comunícate sin dejar huella digital. Encriptación E2E y chats
+				donde tu privacidad es nuestra única prioridad.
 			</p>
 
-			<div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up opacity-0" style="animation-delay: 0.4s;">
-				<a 
+			<div
+				class="flex flex-col sm:flex-row gap-4 animate-fade-in-up opacity-0"
+				style="animation-delay: 0.4s;"
+			>
+				<a
 					href="/login"
 					class="group relative inline-flex items-center gap-3 bg-white text-purple-900 font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] overflow-hidden"
 				>
 					<span class="relative z-10">Comenzar Ahora</span>
-					<svg class="w-5 h-5 relative z-10 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+					<svg
+						class="w-5 h-5 relative z-10 transform group-hover:translate-x-1 transition-transform"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
 					</svg>
-					<div class="absolute inset-0 bg-gradient-to-r from-purple-100 to-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+					<div
+						class="absolute inset-0 bg-gradient-to-r from-purple-100 to-white opacity-0 group-hover:opacity-100 transition-opacity"
+					>
+					</div>
 				</a>
-				
-				<a href="/features" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-200 rounded-full hover:text-purple-300 hover:bg-white/5 border border-transparent hover:border-white/10">
+
+				<a
+					href="#features"
+					class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-200 rounded-full hover:text-purple-300 hover:bg-white/5 border border-transparent hover:border-white/10"
+				>
 					Saber más
 				</a>
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 w-full max-w-6xl px-4">
-			<div class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0" style="animation-delay: 0.5s;">
-				<div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+		<div
+			class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 w-full max-w-6xl px-4"
+		>
+			<div
+				class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0"
+				style="animation-delay: 0.5s;"
+			>
+				<div
+					class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+				>
+				</div>
 				<div class="relative z-10">
-					<div class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors">
-						<svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+					<div
+						class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors"
+					>
+						<svg
+							class="w-7 h-7 text-purple-400"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+							></path>
 						</svg>
 					</div>
-					<h3 class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors">Privacidad Total</h3>
-					<p class="text-purple-200/60 text-sm leading-relaxed">Encriptación de extremo a extremo garantizada. Ni siquiera nosotros podemos leer tus mensajes.</p>
+					<h3
+						class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors"
+					>
+						Privacidad Total
+					</h3>
+					<p class="text-purple-200/60 text-sm leading-relaxed">
+						Encriptación de extremo a extremo garantizada. Ni
+						siquiera nosotros podemos leer tus mensajes.
+					</p>
 				</div>
 			</div>
 
-			<div class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0" style="animation-delay: 0.6s;">
-				<div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+			<div
+				class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0"
+				style="animation-delay: 0.6s;"
+			>
+				<div
+					class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+				>
+				</div>
 				<div class="relative z-10">
-					<div class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors">
-						<svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+					<div
+						class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors"
+					>
+						<svg
+							class="w-7 h-7 text-purple-400"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+							></path>
 						</svg>
 					</div>
-					<h3 class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors">Sin Rastros</h3>
-					<p class="text-purple-200/60 text-sm leading-relaxed">No guardamos logs, IPs ni metadatos. Tu identidad permanece completamente anónima.</p>
+					<h3
+						class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors"
+					>
+						Sin Rastros
+					</h3>
+					<p class="text-purple-200/60 text-sm leading-relaxed">
+						No guardamos logs, IPs ni metadatos. Tu identidad
+						permanece completamente anónima.
+					</p>
 				</div>
 			</div>
 
-			<div class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0" style="animation-delay: 0.7s;">
-				<div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+			<div
+				class="group relative bg-purple-900/10 backdrop-blur-xl p-8 rounded-3xl border border-purple-500/10 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-500 hover:-translate-y-2 animate-fade-in-up opacity-0"
+				style="animation-delay: 0.7s;"
+			>
+				<div
+					class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+				>
+				</div>
 				<div class="relative z-10">
-					<div class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors">
-						<svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+					<div
+						class="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600/30 transition-colors"
+					>
+						<svg
+							class="w-7 h-7 text-purple-400"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+							></path>
 						</svg>
 					</div>
-					<h3 class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors">Mensajes Efímeros</h3>
-					<p class="text-purple-200/60 text-sm leading-relaxed">Configura la autodestrucción de tus chats. Lo que dices aquí, desaparece para siempre.</p>
+					<h3
+						class="text-white text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors"
+					>
+						Mensajes Efímeros
+					</h3>
+					<p class="text-purple-200/60 text-sm leading-relaxed">
+						Configura la autodestrucción de tus chats. Lo que dices
+						aquí, desaparece para siempre.
+					</p>
 				</div>
 			</div>
 		</div>
 
-		<footer class="mt-20 w-full text-center animate-fade-in-up opacity-0" style="animation-delay: 0.8s;">
-			<div class="flex flex-col items-center justify-center gap-4 text-purple-300/40 text-sm">
+		<!-- Sección: Anónimo & Privado (Carrusel 3D) -->
+		<section
+			id="features"
+			class="mt-40 w-full max-w-6xl px-4 flex flex-col md:flex-row items-center gap-24 md:gap-16 py-20 relative"
+		>
+			<div
+				class="flex-1 text-center md:text-left animate-fade-in-up opacity-0"
+				style="animation-delay: 0.2s;"
+			>
+				<h2
+					class="text-5xl md:text-6xl font-black text-white mb-8 leading-tight"
+				>
+					Anónimo & <br /><span
+						class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600"
+						>Privado</span
+					>
+				</h2>
+				<p
+					class="text-xl text-purple-200/70 mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed"
+				>
+					Diseñado bajo una premisa sencilla: nadie, excepto tú y el
+					receptor, puede acceder a tus datos. Ni nosotros, ni los
+					proveedores, ni el hardware.
+				</p>
+				<div
+					class="space-y-4 inline-flex flex-col items-start text-left md:flex"
+				>
+					<div class="flex items-center gap-4 text-purple-200/80">
+						<div
+							class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+						>
+						</div>
+						<span>Cifrado E2EE</span>
+					</div>
+					<div class="flex items-center gap-4 text-purple-200/80">
+						<div
+							class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+						>
+						</div>
+						<span>Sin recolección de metadatos</span>
+					</div>
+					<div class="flex items-center gap-4 text-purple-200/80">
+						<div
+							class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+						>
+						</div>
+						<span>Infraestructura 100% autodestruible</span>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="flex-1 perspective-2000 h-[450px] w-full relative group"
+			>
+				<div
+					class="card-stack relative w-full h-full flex items-center justify-center"
+				>
+					<!-- Card 5 -->
+					<div
+						class="card absolute w-[280px] md:w-[350px] aspect-[4/5] bg-purple-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-700 p-8 flex flex-col items-center justify-center text-center shadow-2xl stack-5"
+					>
+						<img
+							src="/assets/docker_vault.png"
+							alt="Contenerizado"
+							class="w-48 h-48 mb-6 object-contain pointer-events-none"
+						/>
+						<h3 class="text-white text-2xl font-bold mb-2">
+							Contenerizado
+						</h3>
+						<p class="text-purple-200/60 text-sm">
+							Entornos Docker efímeros. Borra el contenedor, borra
+							la evidencia. Máxima seguridad ante el análisis
+							forense.
+						</p>
+					</div>
+					<!-- Card 4 -->
+					<div
+						class="card absolute w-[280px] md:w-[350px] aspect-[4/5] bg-purple-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-700 p-8 flex flex-col items-center justify-center text-center shadow-2xl stack-4"
+					>
+						<img
+							src="/assets/session_wipe.png"
+							alt="Borrado automático"
+							class="w-48 h-48 mb-6 object-contain pointer-events-none"
+						/>
+						<h3 class="text-white text-2xl font-bold mb-2">
+							Session Wiping
+						</h3>
+						<p class="text-purple-200/60 text-sm">
+							Al cerrar sesión, no queda nada. Revisión cada 60
+							mins: si no estás activo, el rastro se elimina de la
+							base de datos.
+						</p>
+					</div>
+					<!-- Card 3 -->
+					<div
+						class="card absolute w-[280px] md:w-[350px] aspect-[4/5] bg-purple-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-700 p-8 flex flex-col items-center justify-center text-center shadow-2xl stack-3"
+					>
+						<img
+							src="/assets/matrix_e2ee.png"
+							alt="Matrix Protocol"
+							class="w-48 h-48 mb-6 object-contain pointer-events-none"
+						/>
+						<h3 class="text-white text-2xl font-bold mb-2">
+							Matrix Protocol
+						</h3>
+						<p class="text-purple-200/60 text-sm">
+							Tráfico nativamente cifrado E2EE. Sesiones de
+							invitado para total anonimato sin vincular datos
+							personales.
+						</p>
+					</div>
+					<!-- Card 2 -->
+					<div
+						class="card absolute w-[280px] md:w-[350px] aspect-[4/5] bg-purple-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-700 p-8 flex flex-col items-center justify-center text-center shadow-2xl stack-2"
+					>
+						<img
+							src="/assets/crypto_keys.png"
+							alt="Llaves Criptográficas"
+							class="w-48 h-48 mb-6 object-contain pointer-events-none"
+						/>
+						<h3 class="text-white text-2xl font-bold mb-2">
+							Cifrado Asimétrico
+						</h3>
+						<p class="text-purple-200/60 text-sm">
+							Sin llave privada no hay mensaje. Sin llave pública
+							no hay usuario. Tú eres el único dueño de tu
+							identidad digital.
+						</p>
+					</div>
+					<!-- Card 1 -->
+					<div
+						class="card absolute w-[280px] md:w-[350px] aspect-[4/5] bg-purple-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-700 p-8 flex flex-col items-center justify-center text-center shadow-2xl stack-1"
+					>
+						<img
+							src="/assets/tailscale_secure.png"
+							alt="TailScale VPN"
+							class="w-48 h-48 mb-6 object-contain pointer-events-none"
+						/>
+						<h3 class="text-white text-2xl font-bold mb-2">
+							Despliegue Local
+						</h3>
+						<p class="text-purple-200/60 text-sm">
+							Arquitectura en red privada usando TailScale. Solo
+							quien tú decidas tiene la puerta abierta a tu canal
+							seguro.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Sección: ADN de Privacidad (Bento Technical) -->
+		<section class="mt-40 w-full max-w-6xl px-4 py-20 relative">
+			<div class="text-center mb-16 animate-fade-in-up opacity-0">
+				<h2 class="text-4xl md:text-5xl font-black text-white mb-4">
+					Arquitectura <span
+						class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600"
+						>Zero-Trace</span
+					>
+				</h2>
+				<p class="text-lg text-purple-200/60 max-w-2xl mx-auto">
+					La ingeniería detrás de la privacidad más absoluta
+					disponible actualmente.
+				</p>
+			</div>
+
+			<div
+				class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-auto md:h-[600px]"
+			>
+				<div
+					class="md:col-span-2 md:row-span-2 bg-gradient-to-br from-purple-900/30 to-black p-10 rounded-[3rem] border border-purple-500/20 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-500"
+				>
+					<div
+						class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity"
+					>
+						<svg
+							class="w-48 h-48 text-purple-400"
+							fill="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5zM2 12l10 5 10-5-10-5-10 5z"
+							></path>
+						</svg>
+					</div>
+					<h3 class="text-3xl font-bold text-white mb-6">
+						Infraestructura Imbatible
+					</h3>
+					<p class="text-purple-200/70 text-lg leading-relaxed mb-8">
+						Nuestra arquitectura está diseñada para no recordar.
+						Cada interacción se procesa en memoria volátil siempre
+						que sea posible.
+					</p>
+					<ul class="space-y-4">
+						<li class="flex items-center gap-3 text-purple-300">
+							<svg
+								class="w-6 h-6"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 13l4-4L19 7"></path></svg
+							>
+							<span>Zero-Knowledge Server Logs</span>
+						</li>
+						<li class="flex items-center gap-3 text-purple-300">
+							<svg
+								class="w-6 h-6"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 13l4-4L19 7"></path></svg
+							>
+							<span>Rotación dinámica de llaves</span>
+						</li>
+						<li class="flex items-center gap-3 text-purple-300">
+							<svg
+								class="w-6 h-6"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 13l4-4L19 7"></path></svg
+							>
+							<span>Aislamiento de procesos por usuario</span>
+						</li>
+					</ul>
+				</div>
+
+				<div
+					class="md:col-span-2 bg-purple-900/10 backdrop-blur-xl p-8 rounded-[3rem] border border-purple-500/10 hover:border-purple-500/30 transition-all duration-500 flex flex-col justify-center"
+				>
+					<h4 class="text-white text-xl font-bold mb-2">
+						Protocolo Descentralizado
+					</h4>
+					<p class="text-purple-200/60 text-sm">
+						ChatSender no es centralizado. Usamos Matrix para
+						permitir una comunicación federada y segura desde el
+						despliegue inicial.
+					</p>
+				</div>
+
+				<div
+					class="md:col-span-1 bg-purple-900/10 backdrop-blur-xl p-8 rounded-[3rem] border border-purple-500/10 hover:border-purple-500/30 transition-all duration-500 flex flex-col items-center justify-center text-center"
+				>
+					<div class="text-4xl font-black text-purple-400 mb-2">
+						60m
+					</div>
+					<p
+						class="text-white text-xs font-bold uppercase tracking-wider"
+					>
+						Limpia de DB
+					</p>
+				</div>
+
+				<div
+					class="md:col-span-1 bg-gradient-to-tr from-purple-600/20 to-transparent backdrop-blur-xl p-8 rounded-[3rem] border border-purple-500/10 hover:border-purple-500/30 transition-all duration-500 flex flex-col items-center justify-center text-center"
+				>
+					<svg
+						class="w-10 h-10 text-white mb-3"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+						></path>
+					</svg>
+					<p
+						class="text-white text-xs font-bold uppercase tracking-wider"
+					>
+						Anti-Forensic Ready
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<footer
+			class="mt-20 w-full text-center animate-fade-in-up opacity-0"
+			style="animation-delay: 0.8s;"
+		>
+			<div
+				class="flex flex-col items-center justify-center gap-4 text-purple-300/40 text-sm"
+			>
 				<div class="flex items-center gap-2">
 					<div class="w-2 h-2 rounded-full bg-green-500"></div>
 					<span>Online</span>
 				</div>
-				<p>&copy; {new Date().getFullYear()} ChatSender. Seguridad sin compromisos.</p>
+				<p>
+					&copy; {new Date().getFullYear()} ChatSender. Seguridad sin compromisos.
+				</p>
 			</div>
 		</footer>
-
 	</main>
 </Layout>
 
 <style>
 	/* Animaciones personalizadas CSS para asegurar funcionamiento sin config extra */
 	@keyframes float {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(-20px); }
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-20px);
+		}
 	}
-	
+
 	@keyframes pulse-slow {
-		0%, 100% { opacity: 0.6; }
-		50% { opacity: 0.3; }
+		0%,
+		100% {
+			opacity: 0.6;
+		}
+		50% {
+			opacity: 0.3;
+		}
 	}
 
 	@keyframes twinkle {
-		0%, 100% { opacity: 0.2; transform: scale(0.8); }
-		50% { opacity: 1; transform: scale(1.2); }
+		0%,
+		100% {
+			opacity: 0.2;
+			transform: scale(0.8);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.2);
+		}
 	}
 
 	@keyframes fadeInUp {
@@ -156,5 +625,168 @@ import Layout from '../layouts/Layout.astro';
 
 	.animate-fade-in-up {
 		animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+	}
+
+	.perspective-2000 {
+		perspective: 2000px;
+	}
+
+	.card-stack {
+		transform-style: preserve-3d;
+	}
+
+	.card {
+		transform-origin: center center;
+		transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+		cursor: pointer;
+	}
+
+	/* Estados de la pila de cartas */
+	.stack-1 {
+		transform: translateZ(0) translateY(0) rotateX(0deg);
+		z-index: 50;
+	}
+	.stack-2 {
+		transform: translateZ(-50px) translateY(-20px) rotateX(4deg);
+		z-index: 40;
+		opacity: 0.8;
+	}
+	.stack-3 {
+		transform: translateZ(-100px) translateY(-40px) rotateX(8deg);
+		z-index: 30;
+		opacity: 0.6;
+	}
+	.stack-4 {
+		transform: translateZ(-150px) translateY(-60px) rotateX(12deg);
+		z-index: 20;
+		opacity: 0.4;
+	}
+	.stack-5 {
+		transform: translateZ(-200px) translateY(-80px) rotateX(16deg);
+		z-index: 10;
+		opacity: 0.2;
+	}
+
+	/* Animación al pasar el ratón por el contenedor (shuffling effect) */
+	.group:hover .stack-1 {
+		transform: translateZ(100px) translateY(-10px) rotateX(-5deg)
+			rotateY(5deg);
+	}
+	.group:hover .stack-2 {
+		transform: translateZ(50px) translateY(0) rotateX(0);
+		opacity: 1;
+	}
+	.group:hover .stack-3 {
+		transform: translateZ(0) translateY(10px) rotateX(5deg);
+		opacity: 0.9;
+	}
+	.group:hover .stack-4 {
+		transform: translateZ(-50px) translateY(20px) rotateX(10deg);
+		opacity: 0.7;
+	}
+	.group:hover .stack-5 {
+		transform: translateZ(-100px) translateY(30px) rotateX(15deg);
+		opacity: 0.5;
+	}
+
+	/* Micro-ajustes para móviles */
+	@media (max-width: 768px) {
+		.stack-1,
+		.stack-2,
+		.stack-3,
+		.stack-4,
+		.stack-5 {
+			width: min(300px, 85vw);
+			aspect-ratio: 4/5;
+		}
+		.perspective-2000 {
+			perspective: 1500px;
+			margin-top: 100px;
+			display: flex;
+			justify-content: center;
+			height: 380px;
+		}
+		/* Offsets solo positivos para evitar solape con texto superior en móviles */
+		.stack-1 {
+			transform: translateZ(0) translateY(80px) rotateX(0deg);
+		}
+		.stack-2 {
+			transform: translateZ(-40px) translateY(60px) rotateX(4deg);
+		}
+		.stack-3 {
+			transform: translateZ(-80px) translateY(40px) rotateX(8deg);
+		}
+		.stack-4 {
+			transform: translateZ(-120px) translateY(20px) rotateX(12deg);
+		}
+		.stack-5 {
+			transform: translateZ(-160px) translateY(0px) rotateX(16deg);
+		}
+
+		.group:hover .stack-1 {
+			transform: translateZ(50px) translateY(85px) rotateX(-2deg);
+		}
+	}
+</style>
+
+<script>
+	const stack = document.querySelector(".card-stack");
+	if (stack) {
+		const cards = Array.from(stack.querySelectorAll(".card"));
+		let currentClasses = [
+			"stack-1",
+			"stack-2",
+			"stack-3",
+			"stack-4",
+			"stack-5",
+		];
+
+		const rotateCards = () => {
+			const lastClass = currentClasses.pop();
+			if (lastClass) {
+				currentClasses.unshift(lastClass);
+			}
+
+			cards.forEach((card, index) => {
+				card.classList.remove(
+					"stack-1",
+					"stack-2",
+					"stack-3",
+					"stack-4",
+					"stack-5",
+				);
+				card.classList.add(currentClasses[index]);
+			});
+		};
+
+		stack.addEventListener("click", rotateCards);
+
+		let startX = 0;
+		stack.addEventListener(
+			"touchstart",
+			(e: Event) => {
+				const touchEvent = e as TouchEvent;
+				startX = touchEvent.touches[0].clientX;
+			},
+			{ passive: true },
+		);
+
+		stack.addEventListener(
+			"touchend",
+			(e: Event) => {
+				const touchEvent = e as TouchEvent;
+				const endX = touchEvent.changedTouches[0].clientX;
+				if (Math.abs(startX - endX) > 50) {
+					rotateCards();
+				}
+			},
+			{ passive: true },
+		);
+	}
+</script>
+
+<style>
+	html {
+		scroll-behavior: smooth;
 	}
 </style>
