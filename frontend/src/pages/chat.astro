@@ -18,7 +18,7 @@ import Layout from "../layouts/Layout.astro";
 
     <main
         id="mainContent"
-        class="relative h-screen max-h-screen flex flex-col lg:flex-row overflow-hidden"
+        class="relative h-[100dvh] max-h-[100dvh] flex flex-col lg:flex-row overflow-hidden"
     >
         <!-- Sidebar de información y chats activos -->
         <aside
@@ -656,6 +656,54 @@ o
     // Verificar autenticación
     if (!authService.isAuthenticated()) {
         window.location.href = "/login";
+    } else {
+        // Registrar actividad del usuario para mantener la sesión viva
+        const updateSessionActivity = () => {
+            authService.updateActivity();
+        };
+
+        window.addEventListener("mousemove", updateSessionActivity);
+        window.addEventListener("keydown", updateSessionActivity);
+        window.addEventListener("touchstart", updateSessionActivity);
+        window.addEventListener("click", updateSessionActivity);
+    }
+
+    // Manejo del teclado en móviles (Visual Viewport API)
+    if (window.visualViewport) {
+        const viewport = window.visualViewport;
+        const mainContent = document.getElementById("mainContent");
+
+        const handleResize = () => {
+            if (!mainContent) return;
+
+            // Actualizar variables CSS con la geometría real del viewport visible
+            // Esto asegura que si el navegador hace scroll (offsetTop), el contenedor baje con él
+            mainContent.style.setProperty(
+                "--app-height",
+                `${viewport.height}px`,
+            );
+            mainContent.style.setProperty(
+                "--app-top",
+                `${viewport.offsetTop}px`,
+            );
+
+            // Si el teclado está abierto (altura reducida)
+            if (viewport.height < window.innerHeight) {
+                // Scroll al último mensaje
+                const messagesContainer =
+                    document.getElementById("chatMessages");
+                if (messagesContainer) {
+                    messagesContainer.scrollTop =
+                        messagesContainer.scrollHeight;
+                }
+            }
+        };
+
+        viewport.addEventListener("resize", handleResize);
+        viewport.addEventListener("scroll", handleResize);
+
+        // Inicializar
+        handleResize();
     }
 
     // Elementos del DOM
@@ -1457,8 +1505,10 @@ o
         #mainContent.is-viewing-chat #chatArea {
             display: flex;
             position: fixed;
-            inset: 0;
-            height: 100vh;
+            left: 0;
+            width: 100%;
+            top: var(--app-top, 0);
+            height: var(--app-height, 100dvh);
             z-index: 30;
             background: #0f0014;
         }
