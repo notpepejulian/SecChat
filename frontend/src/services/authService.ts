@@ -13,6 +13,8 @@ export interface AuthResponse {
 }
 
 class AuthService {
+  // Constante para timeout de 5 minutos (en milisegundos)
+  private readonly SESSION_TIMEOUT: number = 5 * 60 * 1000;
   private token: string | null = null;
 
   /**
@@ -55,9 +57,10 @@ class AuthService {
 
       const { token } = await verifyResponse.json();
 
-      // 5. Guardar token y llave privada
+      // 5. Guardar token, llave privada y timestamp de actividad
       this.token = token;
       localStorage.setItem('authToken', token);
+      this.updateActivity(); // Marcar inicio de sesión como actividad
       cryptoService.savePrivateKey(privateKey, ''); // TODO: password
 
       return { success: true, token };
@@ -89,15 +92,40 @@ class AuthService {
   logout(): void {
     this.token = null;
     localStorage.removeItem('authToken');
+    localStorage.removeItem('lastActive');
     cryptoService.clearKeys();
   }
 
   /**
-   * Verifica si hay una sesión activa
+   * Verifica si hay una sesión activa y válida (no expirada)
    */
   isAuthenticated(): boolean {
     const token = localStorage.getItem('authToken');
-    return token !== null;
+    if (!token) return false;
+
+    // Verificar timeout de inactividad
+    const lastActiveStr = localStorage.getItem('lastActive');
+    if (lastActiveStr) {
+      const lastActive = parseInt(lastActiveStr, 10);
+      const now = Date.now();
+
+      if (now - lastActive > this.SESSION_TIMEOUT) {
+        console.log('Sesión expirada por inactividad');
+        this.logout();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Actualiza el timestamp de última actividad
+   */
+  updateActivity(): void {
+    if (this.token || localStorage.getItem('authToken')) {
+      localStorage.setItem('lastActive', Date.now().toString());
+    }
   }
 
   /**

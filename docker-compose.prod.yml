@@ -122,10 +122,13 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
+      - ./nginx/certs:/etc/nginx/certs:ro,Z
     ports:
       - "80:80"
+      - "443:443"
     networks:
-      - internal
+      internal:
+        ipv4_address: 172.18.0.8
     depends_on:
       synapse:
         condition: service_healthy
@@ -139,11 +142,13 @@ services:
   tailscale:
     image: tailscale/tailscale:latest
     container_name: chatsender_tailscale
-    hostname: chatsender-prod
+    hostname: chatsender
+    entrypoint: /bin/sh -c "ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables && ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables && exec /usr/local/bin/containerboot"
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
+      - TS_SNAT_SUBNET_ROUTES=true
       - TS_EXTRA_ARGS=--advertise-exit-node --advertise-routes=172.18.0.0/16
     volumes:
       - tailscale_data:/var/lib/tailscale
@@ -165,11 +170,11 @@ volumes:
   synapse_data:
   db_data:
   tailscale_data:
-
-
 networks:
   internal:
     driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: "1280"
     ipam:
       config:
         - subnet: 172.18.0.0/16

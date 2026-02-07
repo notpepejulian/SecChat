@@ -141,10 +141,13 @@ services:
     volumes:
       # Configuración de nginx con SELinux
       - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
+      - ./nginx/certs:/etc/nginx/certs:ro,Z
     ports:
       - "80:80"
+      - "443:443"
     networks:
-      - internal
+      internal:
+        ipv4_address: 172.18.0.8
     depends_on:
       synapse:
         condition: service_healthy
@@ -167,6 +170,7 @@ services:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
+      - TS_SNAT_SUBNET_ROUTES=true
       - TS_EXTRA_ARGS=--advertise-exit-node --advertise-routes=172.18.0.0/16
     volumes:
       - tailscale_data:/var/lib/tailscale
@@ -183,7 +187,7 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
       - internal
-      
+
 volumes:
   synapse_data:
   db_data:
@@ -191,6 +195,8 @@ volumes:
 networks:
   internal:
     driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: "1280"
     ipam:
       config:
         - subnet: 172.18.0.0/16
