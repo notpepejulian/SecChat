@@ -39,3 +39,7 @@ pnpm-debug.log*
 
 # Scripts
 *.sh
+
+# Certificados
+.crt
+.key
