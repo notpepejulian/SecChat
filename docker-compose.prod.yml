@@ -122,10 +122,13 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
+      - ./nginx/certs:/etc/nginx/certs:ro,Z
     ports:
       - "80:80"
+      - "443:443"
     networks:
-      - internal
+      internal:
+        ipv4_address: 172.18.0.8
     depends_on:
       synapse:
         condition: service_healthy
