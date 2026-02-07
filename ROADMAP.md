@@ -17,7 +17,7 @@ Este documento detalla la evolución planificada para **ChatSender**, enfocándo
 
 > Rediseño estético del chat conservando la identidad de ChatSender pero con una mejor experiencia de usuario.
 
-* **[ ] Estética Actualizada:** Implementación de estilos **Glassmorphism** o Neo-minimalismo sobre la paleta de colores original.
+* **[ ] Estética Actualizada:** Implementación de estilos **Glassmorphism** o Neo-minimalismo sobre la paleta de colores original tanto en la landing page como en el chat.
 * **[ ] Interactividad:** Mejora de la responsividad y animaciones fluidas para la entrada/salida de mensajes y estados de conexión.
 
 ---

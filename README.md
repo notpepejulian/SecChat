@@ -5,9 +5,15 @@
 
 **ChatSender** is a high-performance, private messaging orchestrator built on **Matrix Synapse**. It provides a secure bridge between a modern **FastAPI** backend and a reactive **Astro** frontend, all secured within a self-hosted infrastructure.
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
+#### Landing Page
+![alt text](media/landing_chatsender.gif)
+
+#### Chat Page
+![alt text](media/chat_chatsender.gif)
+
+>[!NOTE] 
+The app is fully responsive and can be used on mobile devices the same way as on desktop.
+
 ---
 
 ## Architecture
@@ -74,14 +80,39 @@ cd synapse
 > Configure your `homeserver.yaml` to point to the MariaDB instance as documented in the internal Wiki.
 
 ### 4. Deployment
+
+---
+
+##### Start
 ```bash
 # Start development environment
 docker compose -f docker-compose.dev.yml up -d --build
 ```
-
 ```bash
 # Start production environment
 docker compose -f docker-compose.prod.yml up -d --build
+```
+
+---
+
+##### Rebuild
+```bash
+# Rebuild containers
+docker compose -f docker-compose.dev.yml build --no-cache
+```
+>[!IMPORTANT] 
+Use this command if changes have not been applied after restarting the containers.
+
+---
+
+##### Stop
+
+```bash
+# Stop development environment
+docker compose -f docker-compose.dev.yml down
+
+# Stop production environment
+docker compose -f docker-compose.prod.yml down
 ```
 
 ---
@@ -90,14 +121,9 @@ docker compose -f docker-compose.prod.yml up -d --build
 
 ChatSender uses Ed25519 key pairs for secure access. Use the included helper script to manage keys:
 
-| Command | Action |
-| :--- | :--- |
-| `./keygen.sh generate [n]` | Generate `n` new key pairs and register them (used for testing). |
-| `./keygen.sh list` | List all authorized public keys. |
-| `./keygen.sh revoke <prefix>` | Immediately revoke access for a key. |
-
-> [!CAUTION]
-> Never share your **Private Key**. It is used to sign authentication challenges locally in your browser and is never sent to the server.
+> [!IMPORTANT]
+> Programed: Rotation of private key after a message is sent.
+**Private Key**. It is used to sign authentication challenges locally in your browser and is never sent to the server.
 
 ---
 
@@ -116,4 +142,4 @@ ChatSender uses Ed25519 key pairs for secure access. Use the included helper scr
 
 ## License
 
-The project is open source and available under the MIT License. See the [LICENSE](LICENSE) file for more information. 
+The project is open source and available under the AGPL-3.0 License. See the [LICENSE](LICENSE) file for more information. 
