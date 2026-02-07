@@ -67,8 +67,6 @@ Example: `feat: implement Ed25519 signature verification`
 
 ---
 
----
-
 ## Service Workflow
 
 The project operates through the interaction of several independent services coordinated via Docker Compose.
