@@ -213,6 +213,32 @@ import Layout from "../layouts/Layout.astro";
                     </button>
 
                     <button
+                        id="openQRModalBtn"
+                        class="w-full text-[11px] text-purple-400 hover:text-white transition-colors text-left px-2 py-1.5 hover:bg-purple-500/10 rounded-xl flex items-center justify-between group/qr"
+                    >
+                        <div class="flex items-center gap-2">
+                            <svg
+                                class="w-3.5 h-3.5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                                ></path>
+                            </svg>
+                            <span>Conectar con QR</span>
+                        </div>
+                        <span
+                            class="opacity-0 group-hover/qr:opacity-100 transition-opacity"
+                            >→</span
+                        >
+                    </button>
+
+                    <button
                         id="logoutButtonDesktop"
                         class="hidden lg:flex w-full text-[11px] text-red-400/60 hover:text-red-400 transition-colors text-left px-2 py-1.5 hover:bg-red-500/5 rounded-xl items-center justify-between"
                     >
@@ -647,11 +673,129 @@ o
             </div>
         </div>
     </div>
+    <!-- Modal QR -->
+    <div id="qrModal" class="fixed inset-0 z-50 hidden">
+        <div
+            class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            id="qrModalBackdrop"
+        >
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div
+                class="bg-[#1a0b2e] border border-purple-500/20 rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden animate-fade-in-up"
+            >
+                <!-- Header -->
+                <div
+                    class="p-4 border-b border-purple-500/20 flex items-center justify-between bg-black/20"
+                >
+                    <h3 class="text-white font-bold text-lg">
+                        Conexión Segura
+                    </h3>
+                    <button
+                        id="closeQrModalBtn"
+                        class="text-purple-400 hover:text-white transition-colors"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path></svg
+                        >
+                    </button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex border-b border-purple-500/20">
+                    <button
+                        id="tabMyCode"
+                        class="flex-1 py-3 text-sm font-medium text-white border-b-2 border-purple-500 bg-purple-500/10 transition-colors"
+                    >
+                        Mi Código
+                    </button>
+                    <button
+                        id="tabScan"
+                        class="flex-1 py-3 text-sm font-medium text-purple-400/60 hover:text-white transition-colors"
+                    >
+                        Escanear
+                    </button>
+                </div>
+
+                <!-- Content: My Code -->
+                <div
+                    id="qrMyCodeView"
+                    class="p-8 flex flex-col items-center text-center"
+                >
+                    <div
+                        class="bg-white p-4 rounded-xl mb-4 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
+                    >
+                        <canvas id="qrCanvas" class="w-48 h-48"></canvas>
+                    </div>
+                    <p class="text-purple-200/60 text-xs mb-2">
+                        Este código QR contiene tu identidad pública.
+                    </p>
+                    <p
+                        class="text-purple-300 font-mono text-[10px] break-all px-4"
+                        id="qrHashDisplay"
+                    >
+                        ...
+                    </p>
+                </div>
+
+                <!-- Content: Scan -->
+                <div
+                    id="qrScanView"
+                    class="hidden p-0 relative bg-black h-[350px]"
+                >
+                    <div id="reader" class="w-full h-full"></div>
+                    <div
+                        class="absolute inset-0 pointer-events-none border-[30px] border-black/50 z-10"
+                    >
+                        <div
+                            class="border-2 border-purple-500 w-full h-full relative"
+                        >
+                            <div
+                                class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-purple-500 -mt-0.5 -ml-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-purple-500 -mt-0.5 -mr-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-purple-500 -mb-0.5 -ml-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-500 -mb-0.5 -mr-0.5"
+                            >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute bottom-4 left-0 right-0 text-center z-20"
+                    >
+                        <p
+                            class="text-white text-xs bg-black/60 inline-blocks px-2 py-1 rounded"
+                        >
+                            Apunta al código QR de otro usuario
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </Layout>
 
 <script>
     import { authService } from "../services/authService";
     import { matrixService } from "../services/matrixService";
+    import QRCode from "qrcode";
+    import { Html5Qrcode } from "html5-qrcode";
 
     // Verificar autenticación
     if (!authService.isAuthenticated()) {
@@ -1402,6 +1546,233 @@ o
     // Cargar información al iniciar
     loadUserInfo();
     renderActiveChats();
+
+    // -------------------------------------------------------------------------
+    // Lógica para Códigos QR (Offline Key Exchange)
+    // -------------------------------------------------------------------------
+    const qrModal = document.getElementById("qrModal");
+    const openQrBtn = document.getElementById("openQRModalBtn");
+    const closeQrBtn = document.getElementById("closeQrModalBtn");
+    const tabMyCode = document.getElementById("tabMyCode");
+    const tabScan = document.getElementById("tabScan");
+    const viewMyCode = document.getElementById("qrMyCodeView");
+    const viewScan = document.getElementById("qrScanView");
+    const canvas = document.getElementById("qrCanvas");
+    const hashDisplay = document.getElementById("qrHashDisplay");
+
+    let html5QrCode: Html5Qrcode | null = null;
+    let isScanning = false;
+
+    // Abrir Modal
+    openQrBtn?.addEventListener("click", () => {
+        qrModal?.classList.remove("hidden");
+        showMyCodeTab();
+    });
+
+    // Cerrar Modal
+    const closeQrModal = () => {
+        qrModal?.classList.add("hidden");
+        stopScanner();
+    };
+    closeQrBtn?.addEventListener("click", closeQrModal);
+    document
+        .getElementById("qrModalBackdrop")
+        ?.addEventListener("click", closeQrModal);
+
+    // Tab Switching
+    tabMyCode?.addEventListener("click", showMyCodeTab);
+    tabScan?.addEventListener("click", showScanTab);
+
+    function showMyCodeTab() {
+        tabMyCode?.classList.add(
+            "border-b-2",
+            "border-purple-500",
+            "bg-purple-500/10",
+            "text-white",
+        );
+        tabMyCode?.classList.remove("text-purple-400/60");
+
+        tabScan?.classList.remove(
+            "border-b-2",
+            "border-purple-500",
+            "bg-purple-500/10",
+            "text-white",
+        );
+        tabScan?.classList.add("text-purple-400/60");
+
+        viewMyCode?.classList.remove("hidden");
+        viewScan?.classList.add("hidden");
+
+        stopScanner();
+        generateMyQR();
+    }
+
+    function showScanTab() {
+        tabScan?.classList.add(
+            "border-b-2",
+            "border-purple-500",
+            "bg-purple-500/10",
+            "text-white",
+        );
+        tabScan?.classList.remove("text-purple-400/60");
+
+        tabMyCode?.classList.remove(
+            "border-b-2",
+            "border-purple-500",
+            "bg-purple-500/10",
+            "text-white",
+        );
+        tabMyCode?.classList.add("text-purple-400/60");
+
+        viewScan?.classList.remove("hidden");
+        viewMyCode?.classList.add("hidden");
+
+        startScanner();
+    }
+
+    // Generar QR
+    async function generateMyQR() {
+        const key = authService.getPublicKey();
+        if (key && canvas) {
+            // Formato: chatsender:public_key:<KEY>
+            const data = `chatsender:public_key:${key}`;
+            hashDisplay!.textContent = key;
+
+            try {
+                await QRCode.toCanvas(canvas, data, {
+                    width: 200,
+                    margin: 2,
+                    color: {
+                        dark: "#9333ea", // Purple 600
+                        light: "#ffffff",
+                    },
+                });
+            } catch (err) {
+                console.error("Error generando QR", err);
+            }
+        }
+    }
+
+    // Iniciar Escáner
+    async function startScanner() {
+        if (isScanning) return;
+
+        // Esperar a que el div sea visible
+        setTimeout(async () => {
+            try {
+                if (!html5QrCode) {
+                    html5QrCode = new Html5Qrcode("reader");
+                }
+
+                await html5QrCode.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 },
+                    },
+                    (decodedText, decodedResult) => {
+                        // Success Handler
+                        console.log(
+                            `Code scanned = ${decodedText}`,
+                            decodedResult,
+                        );
+                        handleScanResult(decodedText);
+                    },
+                    (errorMessage) => {
+                        // Error Handler (ignorar errores de "no QR found")
+                    },
+                );
+                isScanning = true;
+            } catch (err) {
+                console.error("Error iniciando cámara", err);
+                alert("No se pudo acceder a la cámara. Verifica los permisos.");
+                showMyCodeTab();
+            }
+        }, 100);
+    }
+
+    async function stopScanner() {
+        if (html5QrCode && isScanning) {
+            try {
+                await html5QrCode.stop();
+                isScanning = false;
+            } catch (err) {
+                console.error("Error deteniendo escáner", err);
+            }
+        }
+    }
+
+    async function handleScanResult(text: string) {
+        if (text.startsWith("chatsender:public_key:")) {
+            const extractedKey = text.split(":")[2];
+
+            stopScanner();
+            closeQrModal();
+
+            // Feedback visual inicial
+            const originalCursor = document.body.style.cursor;
+            document.body.style.cursor = "wait";
+
+            try {
+                await initiateChatFromQR(extractedKey);
+            } catch (err: any) {
+                alert(
+                    "Error al conectar con el usuario escaneado: " +
+                        (err.message || "Desconocido"),
+                );
+            } finally {
+                document.body.style.cursor = originalCursor;
+            }
+        } else {
+            console.warn("QR no válido para ChatSender");
+        }
+    }
+
+    // Lógica para iniciar chat desde QR
+    async function initiateChatFromQR(publicKey: string) {
+        // 1. Buscar usuario en backend por llave pública
+        const response = await fetch("/api/users/lookup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: publicKey }),
+        });
+
+        if (!response.ok) {
+            throw new Error("No se encontró usuario con esta llave pública");
+        }
+
+        const data = await response.json();
+
+        if (!data.found || !data.synapse_user_id) {
+            throw new Error("Usuario no registrado en el directorio");
+        }
+
+        // 2. Crear sala en Matrix
+        const roomId = await matrixService.createDirectMessage(
+            data.synapse_user_id,
+        );
+
+        // Crear nuevo chat local
+        const newChat = {
+            roomId: roomId,
+            recipientAlias: data.alias || "Usuario QR",
+            recipientUserId: data.synapse_user_id,
+            recipientKey: data.public_key,
+        };
+
+        // Evitar duplicados
+        if (
+            !activeChats.find(
+                (c) => c.recipientUserId === newChat.recipientUserId,
+            )
+        ) {
+            activeChats.push(newChat);
+            renderActiveChats();
+        }
+
+        // Abrir chat
+        openChat(newChat);
+    }
 </script>
 
 <style>

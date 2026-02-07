@@ -141,8 +141,10 @@ services:
     volumes:
       # Configuración de nginx con SELinux
       - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
+      - ./nginx/certs:/etc/nginx/certs:ro,Z
     ports:
       - "80:80"
+      - "443:443"
     networks:
       internal:
         ipv4_address: 172.18.0.8

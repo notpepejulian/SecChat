@@ -4,75 +4,84 @@ Este documento detalla la evolución planificada para **ChatSender**, enfocándo
 
 ---
 
-## Fase 1: Criptografía Avanzada y Seguridad
+## 1. Intercambio de Llaves Offline
 
-> *Objetivo: Fortalecer el núcleo de privacidad antes de añadir capas de contenido.*
+> Escaneo de códigos QR para intercambiar llaves de forma segura y física.
 
-* **[ ] Implementación de Perfect Forward Secrecy (PFS):**
-* Integración del protocolo **Double Ratchet** (tipo Signal).
-* Renovación periódica de claves de sesión para asegurar que el compromiso de una clave no afecte mensajes pasados.
-
-
-* **[ ] Intercambio de Llaves vía QR Offline:**
-* Generación de códigos QR con la clave pública del usuario.
-* Módulo de escaneo integrado en la app para verificar la identidad de forma física (OOB - Out of Band).
-
-
+* **[ ] Generación de QR:** Creación de códigos QR que contienen la clave pública del usuario directamente en la interfaz.
+* **[ ] Módulo de Escaneo:** Integración de cámara para verificar la identidad de forma física (OOB - Out of Band), eliminando el riesgo de ataques Man-in-the-Middle durante el intercambio inicial.
 
 ---
 
-## Fase 2: Capacidades de Mensajería
+## 2. Modern UX/UI
 
-> *Objetivo: Expandir las formas en las que los usuarios pueden comunicarse.*
+> Rediseño estético del chat conservando la identidad de ChatSender pero con una mejor experiencia de usuario.
 
-* **[ ] Grupos y Salas Multiusuario:**
-* Implementación de gestión de grupos por parte del administrador de la red.
-* Cifrado de grupo mediante llaves compartidas rotativas.
-
-
-* **[ ] Envío de Multimedia y Archivos:**
-* Soporte para imágenes, vídeos y documentos.
-* Cifrado de archivos en el lado del cliente antes de la subida.
-
-
-* **[ ] Gestión de Mensajes (Eliminación):**
-* Función "Eliminar para todos" mediante el envío de un paquete de revocación de mensaje firmado por el autor.
-
-
+* **[ ] Estética Actualizada:** Implementación de estilos **Glassmorphism** o Neo-minimalismo sobre la paleta de colores original.
+* **[ ] Interactividad:** Mejora de la responsividad y animaciones fluidas para la entrada/salida de mensajes y estados de conexión.
 
 ---
 
-## Fase 3: UX/UI y Enriquecimiento Visual
+## 3. Multimedia Seguro
 
-> *Objetivo: Hacer que la herramienta sea tan intuitiva como moderna sin sacrificar el rendimiento local.*
+> Envío de imágenes y archivos encriptados con la misma rigurosidad que los mensajes de texto.
 
-* **[ ] Rediseño de /chat:**
-* Estética **Glassmorphism** o Neo-minimalista manteniendo la paleta de colores original.
-* Mejora de la responsividad y animaciones suaves para las transiciones de mensajes.
-
-
-* **[ ] Vistas Previas de Enlaces:**
-* Generador de metadatos (título, descripción, imagen).
-* **Importante:** Implementar la generación de vista previa en el lado del servidor para evitar fugas de IP.
-* Opción de abrir enlaces en pestañas nuevas con atributos `rel="noopener noreferrer"`.
-
-
+* **[ ] Cifrado en Origen:** Los archivos se fragmentan y cifran en el cliente antes de ser subidos al servidor.
+* **[ ] Soporte Universal:** Compatibilidad con imágenes, vídeos y documentos manteniendo la soberanía del dato y eliminando metadatos.
 
 ---
 
-## Tabla de Prioridades
+## 4. Rich Links
 
-| Prioridad | Feature | Dificultad | Impacto |
+> Vistas previas de enlaces seguras y navegación externa controlada.
+
+* **[ ] Previsualización Segura:** Generación de metadatos (título e imagen) gestionada por un proxy o en el servidor para evitar que la IP del usuario sea rastreada por el sitio web del enlace.
+* **[ ] Navegación Controlada:** Apertura de enlaces en pestañas nuevas utilizando atributos `rel="noopener noreferrer"`.
+
+---
+
+## 5. Borrado Bilateral
+
+> Posibilidad de eliminar mensajes específicos para ambos participantes en la conversación.
+
+* **[ ] Revocación de Mensajes:** Envío de un paquete de control firmado digitalmente que instruye al cliente del receptor a eliminar localmente un mensaje específico.
+* **[ ] Sincronización:** Asegurar que la base de datos local de ambos usuarios refleje la eliminación de forma inmediata.
+
+---
+
+## 6. Salas Grupales
+
+> Creación de grupos y espacios compartidos con cifrado multi-usuario.
+
+* **[ ] Gestión de Salas:** Administración de acceso por parte del host de la red privada.
+* **[ ] Cifrado Grupal:** Implementación de llaves compartidas rotativas para asegurar que solo los miembros actuales del grupo puedan leer el historial pertinente.
+
+---
+
+## 7. Perfect Forward Secrecy (PFS)
+
+> Rotación de llaves privadas por cada mensaje enviado, imposibilitando el descifrado de mensajes anteriores.
+
+* **[ ] Double Ratchet Protocol:** Integración del algoritmo de trinquete doble para derivar nuevas llaves de cifrado en cada paso de la conversación.
+* **[ ] Protección de Historial:** Garantía de que, en caso de compromiso de una llave actual, los mensajes pasados sigan siendo criptográficamente ilegibles.
+
+---
+
+## Resumen de Prioridades
+
+| Orden | Feature | Dificultad | Impacto |
 | --- | --- | --- | --- |
-| 🔴 Alta | Perfect Forward Secrecy | Alta | Máximo |
-| 🔴 Alta | QR Offline | Baja | Alto |
-| 🟡 Media | Multimedia y Archivos | Media | Alto |
-| 🟡 Media | Rediseño de UX | Media | Medio |
-| 🟢 Baja | Vista previa de enlaces | Baja | Bajo |
+| 1 | Intercambio Offline (QR) | Baja | Alto |
+| 2 | Modern UX/UI | Media | Medio |
+| 3 | Multimedia Seguro | Media | Alto |
+| 4 | Rich Links | Baja | Bajo |
+| 5 | Borrado Bilateral | Media | Medio |
+| 6 | Salas Grupales | Alta | Alto |
+| 7 | Perfect Forward Secrecy | Alta | Máximo |
 
 ---
 
-## Notas Técnicas
+## Notas Técnicas adicionales
 
-* Todos los archivos multimedia deben ser fragmentados y cifrados antes de tocar el almacenamiento local del servidor.
-* La UI debe priorizar tiempos de carga rápidos al ser una aplicación que corre sobre VPN.
+* **Rendimiento:** Al operar sobre VPN, todas las nuevas funciones de UI deben ser ligeras para no penalizar la latencia.
+* **Privacidad de Archivos:** El almacenamiento en el servidor siempre será "Zero-Knowledge"; el administrador nunca podrá visualizar el contenido multimedia.
