@@ -8,57 +8,79 @@ on:
       - main
 
 jobs:
-  # 1. Rama dev: Entorno de desarrollo (no hace el build)
+  # 1. Rama dev: Secret Scanning
   dev-validation:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
+    environment: Dev 
     steps:
       - name: Checkout Código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Secret Scanning (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Validación de archivos (en crudo)
-        run: |
-          echo "Ejecutando validaciones básicas en la rama dev..."
-          # Aquí podrías añadir linters si fuera necesario en el futuro
-          ls -R
-
-  # 2. Rama pre: Entorno de pruebas (con compilación/build)
-  pre-validation:
+  # 2. Rama pre: Validación de Build e Infra
+  pre-build-validate:
     if: github.ref == 'refs/heads/pre'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Código
         uses: actions/checkout@v4
+      - name: Validar Docker Compose Build
+        run: docker compose -f docker-compose.prod.yml build
+      - name: Escaneo de configuración (Dockerfiles y Compose)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
 
-      - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3
+  pre-infra-scan:
+    if: github.ref == 'refs/heads/pre'
+    needs: pre-build-validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        imagen: [
+          'mariadb:lts', 
+          'redis:alpine', 
+          'matrixdotorg/synapse:develop', 
+          'nginx:alpine', 
+          'tailscale/tailscale:latest'
+        ]
+    steps:
+      - name: Escaneo de vulnerabilidades - ${{ matrix.imagen }}
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ matrix.imagen }}
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL'
 
-      - name: Validar Build (Pre-producción)
-        run: |
-          echo "Validando el build del proyecto antes de producción..."
-          docker compose -f docker-compose.prod.yml build
-
-  # 3. Rama main: Entorno de producción (Release automático)
+  # 3. Rama main: Producción y Release
   production-release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: Prod  
     permissions:
       contents: write
+      security-events: write 
     steps:
       - name: Checkout Código
         uses: actions/checkout@v4
 
-      - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Initialize CodeQL (Python)
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
 
-      - name: Validar Build de Producción
-        run: |
-          echo "Asegurando que el contenido de producción compila correctamente..."
-          docker compose -f docker-compose.prod.yml build
-
-      - name: Crear Archivo ZIP del Proyecto
-        run: |
-          zip -r chatsender-v1.0.${{ github.run_number }}.zip . -x "*.git*" "node_modules/*" "*.old" "__pycache__/*"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
       - name: Crear Release de GitHub
         uses: softprops/action-gh-release@v2
@@ -66,10 +88,9 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
           body: |
-            Release automático generado desde la rama main.
-            Build validado correctamente.
-          draft: false
-          prerelease: false
+            Release automático v1.0.${{ github.run_number }}
+            - Análisis estático CodeQL completado.
+            - Infraestructura externa validada.
           files: |
             chatsender-v1.0.${{ github.run_number }}.zip
         env:
