@@ -27,6 +27,7 @@ jobs:
   pre-build-validate:
     if: github.ref == 'refs/heads/pre'
     runs-on: ubuntu-latest
+    environment: Pre
     steps:
       - name: Checkout Código
         uses: actions/checkout@v4
@@ -43,6 +44,7 @@ jobs:
     if: github.ref == 'refs/heads/pre'
     needs: pre-build-validate
     runs-on: ubuntu-latest
+    environment: Pre
     strategy:
       fail-fast: false
       matrix:
