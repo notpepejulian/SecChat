@@ -23,9 +23,13 @@ RUN npm install --omit=dev
 # Copiar la salida de la construcción desde la fase builder
 COPY --from=builder /app/dist ./dist
 
+# Ajustar permisos
+RUN chown -R node:node /app
+
+USER node
+
 # Exponer puerto
 EXPOSE 4321
-
 # Variables de entorno
 ENV HOST=0.0.0.0
 ENV PORT=4321
