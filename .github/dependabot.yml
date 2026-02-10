@@ -5,37 +5,35 @@ updates:
     directory: "/backend"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 1 # Solo permite un PR abierto a la vez
     labels:
       - "backend"
       - "security"
     groups:
-      python-dependencies:
+      python-all:
         patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
+          - "*" # Incluye todas las librerías, incluso major updates
 
   # Frontend
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 1 # Solo permite un PR abierto a la vez
     labels:
       - "frontend"
       - "security"
     groups:
-      deps-no-major:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
+      node-all:
+        patterns:
+          - "*"
 
   # Docker-images
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
     labels:
       - "docker"
       - "security"
@@ -45,5 +43,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
     labels:
       - "ci/cd"
