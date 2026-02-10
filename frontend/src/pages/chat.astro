@@ -470,209 +470,142 @@ import Layout from "../layouts/Layout.astro";
 
     <!-- Modal para nuevo chat -->
     <div
-        id="newChatModal"
-        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    id="newChatModal"
+    class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+>
+    <div
+        class="bg-gradient-to-br from-purple-900/30 to-black p-8 sm:p-10 rounded-[3rem] border border-purple-500/20 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-500 w-full max-w-lg shadow-[0_0_50px_rgba(147,51,234,0.15)]"
+        style="animation: fade-in-up 0.6s ease-out;"
     >
-        <div
-            class="bg-purple-900/20 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full max-w-lg animate-fade-in-up shadow-[0_0_50px_rgba(147,51,234,0.3)]"
-        >
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-white text-xl font-bold">Iniciar Nuevo Chat</h2>
-                <button
-                    id="closeModalBtn"
-                    class="text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
+        
+        <div class="flex items-center justify-between mb-8 relative z-10">
+            <h2 class="text-white text-2xl font-bold tracking-tight">Iniciar Nuevo Chat</h2>
+            <button
+                id="closeModalBtn"
+                class="text-purple-400 hover:text-white transition-all p-2 hover:bg-purple-500/20 rounded-full"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <form id="newChatForm" class="space-y-6 relative z-10">
+            <div>
+                <label
+                    for="recipientInput"
+                    class="block text-xs font-bold text-purple-300/70 uppercase tracking-[0.2em] mb-3 ml-1"
                 >
-                    <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
+                    Alias Temporal o Llave Pública
+                </label>
+                <textarea
+                    id="recipientInput"
+                    rows="3"
+                    class="w-full px-5 py-4 bg-black/40 border border-purple-500/20 rounded-[1.5rem] text-purple-100 placeholder-purple-500/20 text-sm font-mono focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-all resize-none"
+                    placeholder="Ejemplo: user_abc123..."
+                    required
+                ></textarea>
+                <div class="mt-3 px-4 flex items-start gap-2.5">
+                    <svg 
+                        class="w-6 h-6 text-purple-400/80 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" 
+                        fill="none" 
+                        stroke="currentColor" 
                         viewBox="0 0 24 24"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
+                        <path 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="1.5" 
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
                     </svg>
-                </button>
-            </div>
-
-            <form id="newChatForm" class="space-y-4">
-                <div>
-                    <label
-                        for="recipientInput"
-                        class="block text-xs font-bold text-purple-300 uppercase tracking-wider mb-2"
-                    >
-                        Alias Temporal o Llave Pública del Destinatario
-                    </label>
-                    <textarea
-                        id="recipientInput"
-                        rows="3"
-                        class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-sm font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all resize-none"
-                        placeholder="Ejemplo: user_abc123
-o
------BEGIN PUBLIC KEY-----..."
-                        required></textarea>
-                    <p
-                        class="text-[10px] text-purple-400/50 mt-2 flex items-start gap-1.5"
-                    >
-                        <svg
-                            class="w-3 h-3 mt-0.5 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            ></path>
-                        </svg>
-                        <span
-                            >Los alias temporales cambian en cada sesión.
-                            Solicita el alias o llave pública actualizada al
-                            destinatario.</span
-                        >
+                    <p class="text-[12px] leading-relaxed text-purple-100/40">
+                        Los alias temporales cambian en cada sesión. Solicita el alias o llave pública actualizada al destinatario.
                     </p>
                 </div>
+            </div>
 
-                <div id="modalError" class="hidden animate-fade-in-up">
-                    <div
-                        class="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-xl text-xs flex items-center gap-3"
-                    >
-                        <svg
-                            class="w-5 h-5 flex-shrink-0 text-red-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            ></path>
-                        </svg>
-                        <span id="modalErrorText">Error</span>
-                    </div>
-                </div>
+            <button
+                type="submit"
+                id="connectButton"
+                class="w-full bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/40 text-white font-bold py-4 rounded-2xl transition-all duration-300 transform hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-3 group/btn"
+            >
+                <span id="connectButtonText" class="tracking-wide">Conectar</span>
+                <svg id="connectButtonIcon" class="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </button>
+        </form>
 
-                <button
-                    type="submit"
-                    id="connectButton"
-                    class="w-full bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] flex items-center justify-center gap-2"
-                >
-                    <span id="connectButtonText">Conectar</span>
-                    <svg
-                        id="connectButtonIcon"
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                    </svg>
-                    <svg
-                        id="connectLoadingIcon"
-                        class="w-5 h-5 animate-spin hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            class="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            stroke-width="4"></circle>
-                        <path
-                            class="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                    </svg>
-                </button>
-            </form>
-        </div>
+        <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/10 blur-[100px] rounded-full"></div>
     </div>
+</div>
 
     <!-- Modal para mostrar llave pública -->
+<div
+    id="publicKeyModal"
+    class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+>
     <div
-        id="publicKeyModal"
-        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        class="bg-gradient-to-br from-purple-900/30 to-black p-8 sm:p-10 rounded-[3rem] border border-purple-500/20 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-500 w-full max-w-lg shadow-[0_0_50px_rgba(147,51,234,0.15)]"
+        style="animation: fade-in-up 0.6s ease-out;"
     >
-        <div
-            class="bg-purple-900/20 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full max-w-lg animate-fade-in-up shadow-[0_0_50px_rgba(147,51,234,0.3)]"
-        >
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-white text-xl font-bold">Tu Llave Pública</h2>
-                <button
-                    id="closePublicKeyModalBtn"
-                    class="text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
-                >
-                    <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
+        
+        <div class="flex items-center justify-between mb-8 relative z-10">
+            <h2 class="text-white text-2xl font-bold tracking-tight">Tu Llave Pública</h2>
+            <button
+                id="closePublicKeyModalBtn"
+                class="text-purple-400 hover:text-white transition-all p-2 hover:bg-purple-500/20 rounded-full"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label
-                        class="block text-xs font-bold text-purple-300 uppercase tracking-wider mb-2"
+        <div class="space-y-6 relative z-10">
+            <div>
+                <label
+                    class="block text-[10px] font-bold text-purple-300/70 uppercase tracking-[0.2em] mb-3 ml-1"
+                >
+                    Llave pública
+                </label>
+                <div class="relative group/textarea">
+                    <textarea
+                        id="publicKeyDisplay"
+                        rows="6"
+                        class="w-full px-5 py-4 bg-black/60 border border-purple-500/20 rounded-[1.5rem] text-purple-200 text-xs font-mono resize-none focus:outline-none focus:border-purple-500/40 transition-all leading-relaxed"
+                        readonly
+                    >-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7V...</textarea>
+                    
+                    <button
+                        id="copyPublicKeyBtn"
+                        class="absolute top-3 right-3 text-purple-400 hover:text-white transition-all p-2.5 bg-purple-500/5 hover:bg-purple-500/20 border border-purple-500/10 rounded-xl active:scale-90"
+                        title="Copiar Llave"
                     >
-                        Llave Pública
-                    </label>
-                    <div class="relative">
-                        <textarea
-                            id="publicKeyDisplay"
-                            rows="6"
-                            class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 text-xs font-mono resize-none"
-                            readonly></textarea>
-                        <button
-                            id="copyPublicKeyBtn"
-                            class="absolute top-3 right-3 text-purple-400 hover:text-white transition-colors p-2 hover:bg-purple-500/10 rounded-lg"
-                            title="Copiar"
-                        >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                ></path>
-                            </svg>
-                        </button>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mt-4 px-2 flex items-start gap-3">
+                    <div class="p-2 bg-purple-500/10 rounded-lg">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                    <p class="text-[10px] text-purple-400/50 mt-2">
-                        Comparte esta llave para que otros puedan iniciar un
-                        chat contigo.
+                    <p class="text-[11px] leading-relaxed text-purple-100/40">
+                        Esta llave es necesaria para que otros usuarios puedan comunicarse contigo de forma segura.
                     </p>
                 </div>
             </div>
         </div>
+
+        <div class="absolute -top-24 -left-24 w-64 h-64 bg-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
     </div>
+</div>
     <!-- Modal QR -->
     <div id="qrModal" class="fixed inset-0 z-50 hidden">
         <div
@@ -710,16 +643,16 @@ o
                 </div>
 
                 <!-- Tabs -->
-                <div class="flex border-b border-purple-500/20">
+                <div class="flex p-1.5 bg-black/40 backdrop-blur-md rounded-[2rem] border border-purple-500/10 mb-6">
                     <button
                         id="tabMyCode"
-                        class="flex-1 py-3 text-sm font-medium text-white border-b-2 border-purple-500 bg-purple-500/10 transition-colors"
+                        class="flex-1 py-2.5 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-purple-600/20 to-purple-900/40 border border-purple-500/30 rounded-[1.8rem] shadow-[0_0_15px_rgba(147,51,234,0.1)] transition-all duration-300"
                     >
                         Mi Código
                     </button>
                     <button
                         id="tabScan"
-                        class="flex-1 py-3 text-sm font-medium text-purple-400/60 hover:text-white transition-colors"
+                        class="flex-1 py-2.5 text-sm font-medium text-purple-400/50 hover:text-purple-200 transition-all duration-300 rounded-[1.8rem] hover:bg-purple-500/5"
                     >
                         Escanear
                     </button>
@@ -1018,12 +951,12 @@ o
                     .toUpperCase();
             }
 
-            console.log("✅ Sesión Matrix iniciada:", sessionInfo);
+            console.log("Sesión Matrix iniciada:", sessionInfo);
 
             // Sincronizar chats existentes
             await syncExistingChats();
         } catch (error) {
-            console.error("❌ Error al iniciar sesión Matrix:", error);
+            console.error("Error al iniciar sesión Matrix:", error);
             userAlias.textContent = "Error";
             alert("Error al conectar con el servidor de chat.");
         }
@@ -1218,7 +1151,7 @@ o
         }
 
         console.log(
-            `✅ Timeline obtenido para ${roomId}: ${timeline.length} eventos`,
+            `Timeline obtenido para ${roomId}: ${timeline.length} eventos`,
         );
         renderTimeline(roomId, timeline);
     }
@@ -1235,7 +1168,7 @@ o
 
         chatMessages.innerHTML = ""; // Limpiar
         console.log(
-            `📜 Renderizando ${timeline.length} eventos para ${roomId}`,
+            `Renderizando ${timeline.length} eventos para ${roomId}`,
         );
 
         timeline.forEach((event) => {
