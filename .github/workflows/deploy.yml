@@ -15,7 +15,7 @@ jobs:
     environment: Dev 
     steps:
       - name: Checkout Código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Secret Scanning (Gitleaks)
@@ -30,7 +30,7 @@ jobs:
     environment: Pre
     steps:
       - name: Checkout Código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Validar Docker Compose Build
         run: docker compose -f docker-compose.prod.yml build
       - name: Escaneo de configuración (Dockerfiles y Compose)
@@ -74,7 +74,7 @@ jobs:
       security-events: write 
     steps:
       - name: Checkout Código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Initialize CodeQL (Python)
         uses: github/codeql-action/init@v3
