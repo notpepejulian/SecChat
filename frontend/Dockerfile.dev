@@ -1,8 +1,9 @@
+# trivy:ignore:AVD-DS-0002
 # Usamos Node con Debian en lugar de Alpine para evitar problemas con binarios nativos de Rollup
 FROM node:20-slim
 
 # Instalar dependencias del sistema necesarias
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 

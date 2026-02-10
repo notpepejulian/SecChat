@@ -22,7 +22,7 @@ The system follows a microservices architecture orchestrated by Docker, ensuring
 
 ```mermaid
 graph TD
-    Client[Web Browser] -->|HTTP/80| Nginx[Nginx Reverse Proxy]
+    Client[Web Browser] -->|HTTP/443| Nginx[Nginx Reverse Proxy]
     
     subgraph "Docker Infrastructure"
         Nginx -->|/| Frontend[Astro Frontend]
@@ -36,7 +36,7 @@ graph TD
         Synapse -->|SQL| MariaDB
         
         subgraph "Security Layer"
-            VPN[WireGuard VPN]
+            VPN[Tailscale VPN]
         end
     end
 ```
@@ -136,7 +136,7 @@ ChatSender uses Ed25519 key pairs for secure access. Use the included helper scr
 | **Backend** | 8000 | Business logic & Synapse bridge. |
 | **Synapse** | 8008 | Core Matrix server. |
 | **MariaDB** | 3306 | Persistent storage. |
-| **WireGuard**| 51820 | Secure remote access. |
+| **Tailscale/**| P2P | Secure P2P remote access. |
 
 ---
 

@@ -12,6 +12,7 @@ export default defineConfig({
   }),
   integrations: [react(), tailwind()],
   server: {
+    allowedHosts: ["chatsender.io", "fed.local"],
     host: '0.0.0.0',
     port: 4321
   }
