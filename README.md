@@ -12,7 +12,7 @@
 ![alt text](media/chat_chatsender.gif)
 
 >[!NOTE] 
-The app is fully responsive and can be used on mobile devices the same way as on desktop.
+The app is fully responsive and can be used on mobile devices the same way as on Desktop.
 
 ---
 
