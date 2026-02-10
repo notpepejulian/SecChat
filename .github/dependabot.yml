@@ -3,23 +3,25 @@ updates:
   # Backend
   - package-ecosystem: "pip"
     directory: "/backend"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 1 # Solo permite un PR abierto a la vez
+    open-pull-requests-limit: 1 
     labels:
       - "backend"
       - "security"
     groups:
       python-all:
         patterns:
-          - "*" # Incluye todas las librerías, incluso major updates
+          - "*" 
 
   # Frontend
   - package-ecosystem: "npm"
     directory: "/frontend"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 1 # Solo permite un PR abierto a la vez
+    open-pull-requests-limit: 1 
     labels:
       - "frontend"
       - "security"
@@ -31,6 +33,7 @@ updates:
   # Docker-images
   - package-ecosystem: "docker"
     directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 1
@@ -41,6 +44,7 @@ updates:
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 1
