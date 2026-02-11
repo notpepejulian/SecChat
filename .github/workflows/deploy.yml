@@ -56,6 +56,9 @@ jobs:
           'tailscale/tailscale:latest'
         ]
     steps:
+      - name: Checkout Código
+        uses: actions/checkout@v6
+
       - name: Escaneo de vulnerabilidades - ${{ matrix.imagen }}
         uses: aquasecurity/trivy-action@master
         env:
