@@ -10,7 +10,7 @@
 services:
   # 1. Base de Datos (MariaDB)
   db:
-    image: mariadb:lts
+    image: mariadb@sha256:f57b654bf058c814e4a0145e2397afe290df44dd1f5cb990a01878be9f531e7
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -44,7 +44,7 @@ services:
 
   # 2. Servidor de Mensajería (Synapse)
   synapse:
-    image: matrixdotorg/synapse:develop
+    image: matrixdotorg/synapse@sha256:f7085052f05e3bc6f87f468984abf3c0662f6c44911a5de048605db2e802863f
     restart: unless-stopped
     environment:
       SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME}
