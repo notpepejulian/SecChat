@@ -63,6 +63,7 @@ jobs:
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL'
+          trivyignore: .trivyignore
 
   # 3. Rama main: Producción y Release
   production-release:
