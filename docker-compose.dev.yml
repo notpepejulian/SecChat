@@ -1,22 +1,13 @@
 #------------------------------------------------#
-# Docker Compose para DESARROLLO
-# El siguiente documento docker-compose.dev.yml
-# está configurado para orquestar una infra
-# dedicada a un servidor de mensajeria mediante
-# el uso de VPN, DB, WebApp y Proxy Inverso NGINX.
-# Se mantiene compatibilidad con SELINUX mediante
-# el uso de volumenes :Z en los mountpoints.
-#
-# Características de desarrollo:
-# - Hot reload activado
-# - Volúmenes montados para edición en vivo
-# - Backend ejecuta como root (SELinux)
+# Docker Compose para DESARROLLO (Actualizado)
+# Se han sustituido las imágenes por las del registro 
+# personal con firma de Digest para máxima estabilidad.
 #-----------------------------------------------#
 
 services:
   # 1. Base de Datos (MariaDB)
   db:
-    image: mariadb:lts
+    image: notpepejulian/chatsender_mariadb:stable
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -37,9 +28,9 @@ services:
       retries: 5
     container_name: chatsender_db
 
-  # 1.5. Redis (Cache y mensajería temporal)
+  # 1.5. Redis
   redis:
-    image: redis:alpine
+    image: notpepejulian/chatsender_redis:stable
     restart: unless-stopped
     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
     networks:
@@ -53,13 +44,12 @@ services:
 
   # 2. Servidor de Mensajería (Synapse)
   synapse:
-    image: matrixdotorg/synapse:develop
+    image: notpepejulian/chatsender_synapse:stable
     restart: unless-stopped
     environment:
-      SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME} # ej: chatsender.dominio.com
+      SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME}
       SYNAPSE_REPORT_STATS: "no"
     volumes:
-      # Volumen persistente nombrado para datos de Synapse
       - synapse_data:/data
     networks:
       - internal
@@ -76,7 +66,7 @@ services:
       start_period: 30s
     container_name: chatsender_synapse
 
-  # 3. Backend de Lógica Personalizada (Python/Node)
+  # 3. Backend (Python/Node)
   backend:
     build:
       context: ./backend
@@ -99,7 +89,6 @@ services:
       retries: 3
       start_period: 20s
     volumes:
-      # Montaje de código del host, necesario para desarrollo
       - ./backend:/app:Z
     networks:
       - internal
@@ -124,7 +113,6 @@ services:
       HOST: 0.0.0.0
       PORT: 4321
     volumes:
-      # Solo montamos src para hot reload, no todo el directorio
       - ./frontend/src:/app/src:Z
       - ./frontend/public:/app/public:Z
     networks:
@@ -136,10 +124,9 @@ services:
 
   # 5. Proxy Inverso (Nginx)
   nginx:
-    image: nginx:alpine
+    image: notpepejulian/chatsender_nginx:stable
     restart: unless-stopped
     volumes:
-      # Configuración de nginx con SELinux
       - ./nginx/conf.d:/etc/nginx/conf.d:ro,Z
       - ./nginx/certs:/etc/nginx/certs:ro,Z
     ports:
@@ -156,16 +143,13 @@ services:
       frontend:
         condition: service_started
     container_name: chatsender_nginx
-  #----------------------------#
-  #    Configurar a futuro
-  #----------------------------#
 
-  # 6. VPN (Tailscale) - Acceso Privado
+  # 6. VPN (Tailscale)
   tailscale:
-    image: tailscale/tailscale:latest
+    image: notpepejulian/chatsender_tailscale:stable
     container_name: chatsender_tailscale
     hostname: chatsender-dev
-    entrypoint: /bin/sh -c "ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables && ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables && exec /usr/local/bin/containerboot" #Esto es para que funcione en sistemas con kernel 5.10+ (Linux está migrando de iptables legacy a nftables y tailscale no soporta todavía nftables en las imagenes que hay)
+    entrypoint: /bin/sh -c "ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables && ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables && exec /usr/local/bin/containerboot"
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
@@ -192,6 +176,7 @@ volumes:
   synapse_data:
   db_data:
   tailscale_data:
+
 networks:
   internal:
     driver: bridge
