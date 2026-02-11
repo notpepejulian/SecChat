@@ -1,87 +1,87 @@
-# Synapse Setup - Guía de Inicialización
+# Synapse Setup - Initialization Guide
 
-Este directorio contiene la lógica necesaria para configurar y administrar el servidor de mensajería Matrix (Synapse). Para que el sistema **SecChat** funcione, Synapse debe estar correctamente inicializado y vinculado con el Backend mediante un Token de Administrador.
+This directory contains the logic required to configure and manage the Matrix messaging server (Synapse). For the **SecChat** system to function, Synapse must be properly initialized and linked to the Backend via an Administrator Token.
 
-## Pre-requisitos
+## Prerequisites
 
-1. Tener configurado el archivo `.env` en la raíz del proyecto (basado en `.env.example`).
-2. Docker y Docker Compose instalados.
-3. **(Opcional)** El dominio por defecto `fed.local` debe apuntar a tu IP local en el archivo `/etc/hosts`.
+1. A configured `.env` file in the project root (based on `.env.example`).
+2. Docker and Docker Compose installed.
+3. **(Optional)** The default domain `fed.local` should point to your local IP in the `/etc/hosts` file.
 
 ---
 
-## Orden de Ejecución (Paso a Paso)
+## Execution Order (Step-by-Step)
 
-Para un despliegue exitoso, se debe seguir este orden estrictamente:
+For a successful deployment, this order must be followed strictly:
 
-### Paso 1: Generar la configuración base
+### Step 1: Generate Base Configuration
 
 > [!IMPORTANT]
-Antes de levantar los contenedores, Synapse necesita generar sus archivos de configuración y llaves de firmado.
+> Before starting the containers, Synapse needs to generate its configuration files and signing keys.
 
 ```bash
 ./generate_config.sh
 ```
 
-*Esto creará la carpeta `data/` con el archivo `homeserver.yaml`.*
+*This will create the `data/` folder containing the `homeserver.yaml` file.*
 
-### Paso 2: Levantar la infraestructura
+### Step 2: Start the Infrastructure
 
-Levanta todos los servicios definidos en el Compose.
+Bring up all services defined in the Compose file.
 
 ```bash
 docker compose up -d
 ```
 
-*Espera a que `chatsender_synapse` y `chatsender_db` aparezcan como `(healthy)` antes de continuar.*
+*Wait for `chatsender_synapse` and `chatsender_db` to appear as `(healthy)` before continuing.*
 
-### Paso 3: Registrar el usuario Administrador
+### Step 3: Register the Administrator User
 
-Necesitas un usuario con privilegios de administrador para que el Backend pueda gestionar la creación y borrado de usuarios efímeros.
+You need a user with administrator privileges so that the Backend can manage the creation and deletion of ephemeral users.
 
 ```bash
 ./register_admin.sh
 ```
 
-> *Sigue los prompts para asignar un nombre de usuario (ej: `admin`) y una contraseña fuerte.*
+> *Follow the prompts to assign a username (e.g., `admin`) and a strong password.*
 
-### Paso 4: Obtener el Token de Acceso (Admin Token)
+### Step 4: Obtain the Access Token (Admin Token)
 
-El Backend necesita el `SYNAPSE_ADMIN_TOKEN` para comunicarse con la API de Matrix. Este script realiza el login y extrae el token.
+The Backend requires the `SYNAPSE_ADMIN_TOKEN` to communicate with the Matrix API. This script performs the login and extracts the token.
 
 ```bash
 ./synapse_admin_setup.sh
 ```
 
 > [!IMPORTANT]
-Copia el token resultante y pégalo en tu archivo `.env` en la variable `SYNAPSE_ADMIN_TOKEN`.
+> Copy the resulting token and paste it into your `.env` file in the `SYNAPSE_ADMIN_TOKEN` variable.
 
 ---
 
-## Diccionario de Scripts
+## Script Dictionary
 
-| Script | Función | Cuándo usarlo |
+| Script | Function | When to use it |
 | --- | --- | --- |
-| `generate_config.sh` | Crea el `homeserver.yaml` inicial. | Solo la primera vez (First run). |
-| `register_admin.sh` | Registra un usuario admin en la DB. | Tras levantar los contenedores. |
-| `synapse_admin_setup.sh` | Obtiene el Token vía API (HTTPS). | Siempre que el token expire o cambie. |
-| `cleanup_users.py` *Deprecated*| Purga usuarios y mensajes expirados. | Automatizado (Cron) o manual para limpieza. |
+| `generate_config.sh` | Creates the initial `homeserver.yaml`. | Only the first time (First run). |
+| `register_admin.sh` | Registers an admin user in the DB. | After starting the containers. |
+| `synapse_admin_setup.sh` | Obtains the Token via API (HTTPS). | Whenever the token expires or changes. |
+| `cleanup_users.py` *Deprecated* | Purges expired users and messages. | Automated (Cron) or manual for cleanup. |
 
 ---
 
-## Notas de Seguridad y Nginx
+## Security and Nginx Notes
 
-Debido a la configuración de seguridad en el Proxy Inverso (Nginx):
+Due to the security configuration in the Reverse Proxy (Nginx):
 
-1. **SSL/HTTPS**: Los scripts que atacan a la API (`synapse_admin_setup.sh`) deben usar el flag `-k` de `curl` si estás usando certificados autofirmados.
-2. **Bloqueo de Navegador**: Nginx bloquea peticiones con header `text/html`. Los scripts de administración funcionan porque `curl` envía headers compatibles con API por defecto.
-3. **Acceso Interno**: Si ejecutas los scripts desde fuera del contenedor, asegúrate de apuntar a `https://fed.local` y no a `localhost`, para que Nginx reconozca el `server_name`.
+1. **SSL/HTTPS**: Scripts targeting the API (`synapse_admin_setup.sh`) must use the `-k` flag in `curl` if you are using self-signed certificates.
+2. **Browser Blocking**: Nginx blocks requests with a `text/html` header. Administration scripts work because `curl` sends API-compatible headers by default.
+3. **Internal Access**: If you run scripts from outside the container, ensure you target `https://fed.local` instead of `localhost` so that Nginx recognizes the `server_name`.
 
 ---
 
-### ¿Qué sigue ahora?
+### What's next?
 
-Una vez que hayas pegado el `SYNAPSE_ADMIN_TOKEN` en tu `.env`, reinicia el backend para que cargue la nueva configuración:
+Once you have pasted the `SYNAPSE_ADMIN_TOKEN` into your `.env`, restart the backend to load the new configuration:
 
 ```bash
 docker compose restart backend
