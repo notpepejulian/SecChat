@@ -1,6 +1,4 @@
 # Ignorar el uso de root en Dockerfiles de desarrollo
 # https://avd.aquasec.com/misconfig/ds002
 AVD-DS-0002
-
-# Tailscale, MariaDB & Synapse (GoSu)
 CVE-2025-68121
