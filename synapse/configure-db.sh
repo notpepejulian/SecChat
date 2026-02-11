@@ -12,7 +12,7 @@ echo "========================================="
 if [ -f ".env" ]; then
     source .env
 else
-    echo "❌ Error: archivo .env no encontrado"
+    echo "Error: archivo .env no encontrado"
     exit 1
 fi
 
@@ -26,12 +26,12 @@ cd /data
 # Backup del archivo original
 if [ ! -f homeserver.yaml.backup ]; then
     cp homeserver.yaml homeserver.yaml.backup
-    echo "✅ Backup creado: homeserver.yaml.backup"
+    echo "Backup creado: homeserver.yaml.backup"
 fi
 
 # Verificar si ya está configurado para MariaDB
 if grep -q "name: pymysql" homeserver.yaml; then
-    echo "⚠️  MariaDB ya está configurado"
+    echo "MariaDB ya está configurado"
     exit 0
 fi
 
@@ -58,7 +58,7 @@ database:
     cp_max: 10
 EOF
 
-echo "✅ Configuración de MariaDB añadida"
+echo "Configuración de MariaDB añadida"
 EOFSCRIPT
 
 chmod +x /tmp/synapse_db_config.sh
@@ -75,7 +75,7 @@ rm /tmp/synapse_db_config.sh
 
 echo ""
 echo "========================================="
-echo "✅ Configuración completada"
+echo "Configuración completada"
 echo "========================================="
 echo ""
 echo "Reinicia el contenedor de Synapse:"

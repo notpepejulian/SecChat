@@ -16,7 +16,7 @@ try:
                 key, value = line.split('=', 1)
                 env_vars[key] = value
 except FileNotFoundError:
-    print("⚠️ No se encontró el archivo .env, usando valores por defecto")
+    print("No se encontró el archivo .env, usando valores por defecto")
 
 DB_USER = env_vars.get('DB_USER', 'synapse_user')
 DB_PASSWORD = env_vars.get('DB_PASSWORD', '')
@@ -25,7 +25,7 @@ DB_NAME = env_vars.get('DB_NAME', 'synapse')
 
 
 
-print("⏳ Generando nueva configuración base con Synapse (para recuperar secretos y estructura)...")
+print("Generando nueva configuración base con Synapse (para recuperar secretos y estructura)...")
 
 # 1. Generar configuración en contenedor temporal
 # Usamos un directorio temporal en el contenedor
@@ -67,18 +67,18 @@ try:
     )
     
     if result.returncode != 0:
-        print(f"❌ Error generando config: {result.stderr}")
+        print(f"Error generando config: {result.stderr}")
         exit(1)
         
     content = result.stdout
-    print("✅ Configuración base generada exitosamente.")
+    print("Configuración base generada exitosamente.")
 
 except Exception as e:
-    print(f"❌ Excepción generando config: {e}")
+    print(f"Excepción generando config: {e}")
     exit(1)
 
 # 2. Asegurar SQLite y Corregir Paths
-print("ℹ️ Corrigiendo paths para usar volumen /data...")
+print("Corrigiendo paths para usar volumen /data...")
 
 # Reemplazar paths absolutos o relativos incorrectos
 # media_store_path: /media_store -> /data/media_store
@@ -111,13 +111,13 @@ content = content.replace('database: homeserver.db', 'database: /data/homeserver
 
 # Verificaciones extra
 if 'name: sqlite3' not in content:
-    print("⚠️ La configuración generada no parece usar sqlite3. Forzando...")
+    print("La configuración generada no parece usar sqlite3. Forzando...")
     # (Lógica simple de reemplazo si fuera necesario, pero generate suele usar sqlite)
 else:
-    print("ℹ️ Configuración usa SQLite correctamente.")
+    print("Configuración usa SQLite correctamente.")
 
 # 3. Escribir al volumen REAL
-print(f"⏳ Escribiendo configuración válida al volumen chatsender_synapse_data...")
+print("Escribiendo configuración válida al volumen chatsender_synapse_data...")
 
 try:
     process = subprocess.Popen(
@@ -128,13 +128,13 @@ try:
     process.communicate(input=content)
     
     if process.returncode == 0:
-        print("✅ Synapse re-configurado y reparado exitosamente")
+        print("Synapse re-configurado y reparado exitosamente")
     else:
-        print("❌ Error al escribir configuración")
+        print("Error al escribir configuración")
         exit(1)
 
 except Exception as e:
-    print(f"❌ Error escribiendo archivo: {e}")
+    print(f"Error escribiendo archivo: {e}")
     exit(1)
 
 

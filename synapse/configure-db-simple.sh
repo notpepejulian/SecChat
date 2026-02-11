@@ -83,6 +83,6 @@ EOF
     "
 }
 
-echo "✅ Synapse configurado para usar MariaDB"
+echo "Synapse configurado para usar MariaDB"
 echo "Reiniciando Synapse..."
 docker-compose restart synapse
