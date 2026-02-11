@@ -49,10 +49,10 @@ jobs:
       fail-fast: false
       matrix:
         imagen: [
-          'mariadb@sha256:f57b654bf058c814e4a0145e2397afe290df44dd1f5cb990a01878be9f531e7', 
-          'redis:alpine', 
+          'library/mariadb@sha256:f57b654bf058c814e4a0145e2397afe290df44dd1f5cb990a01878be9f531e7', 
+          'library/redis:alpine', 
           'matrixdotorg/synapse@sha256:f7085052f05e3bc6f87f468984abf3c0662f6c44911a5de048605db2e802863f', 
-          'nginx:alpine', 
+          'library/nginx:alpine', 
           'tailscale/tailscale:latest'
         ]
     steps:
