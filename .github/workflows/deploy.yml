@@ -49,11 +49,11 @@ jobs:
       fail-fast: false
       matrix:
         imagen: [
-          'library/mariadb@sha256:f57b654bf058c814e4a0145e2397afe290df44dd1f5cb990a01878be9f531e7', 
-          'library/redis:alpine', 
-          'matrixdotorg/synapse@sha256:f7085052f05e3bc6f87f468984abf3c0662f6c44911a5de048605db2e802863f', 
-          'library/nginx:alpine', 
-          'tailscale/tailscale:latest'
+          'docker.io/library/mariadb@sha256:f57b654bf058c814e4a0145e2397afe290df44dd1f5cb990a01878be9f531e7', 
+          'docker.io/library/redis:alpine', 
+          'docker.io/matrixdotorg/synapse@sha256:f7085052f05e3bc6f87f468984abf3c0662f6c44911a5de048605db2e802863f', 
+          'docker.io/library/nginx:alpine', 
+          'docker.io/tailscale/tailscale:latest'
         ]
     steps:
       - name: Escaneo de vulnerabilidades - ${{ matrix.imagen }}
@@ -63,6 +63,7 @@ jobs:
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL'
+          scanners: 'vuln'
 
   # 3. Rama main: Producción y Release
   production-release:
