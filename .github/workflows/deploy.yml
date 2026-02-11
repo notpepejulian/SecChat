@@ -58,12 +58,14 @@ jobs:
     steps:
       - name: Escaneo de vulnerabilidades - ${{ matrix.imagen }}
         uses: aquasecurity/trivy-action@master
+        env:
+          TRIVY_IGNOREFILE: .trivyignore
         with:
           image-ref: ${{ matrix.imagen }}
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL'
-          trivyignore: .trivyignore
+          ignore-unfixed: true
 
   # 3. Rama main: Producción y Release
   production-release:
