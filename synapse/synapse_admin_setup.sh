@@ -60,7 +60,9 @@ echo ""
 
 # Obtener token usando la API de login
 SYNAPSE_SERVER_NAME=${SYNAPSE_SERVER_NAME:-fed.local}
-TOKEN_RESPONSE=$(curl -s -X POST "http://localhost/_matrix/client/v3/login" \
+# Revisar la config de nginx, puede bloquear peticiones
+# Sustituir "localhost"por "fed.local  si no funciona correctamente
+TOKEN_RESPONSE=$(curl -s -k -X POST "http://localhost/_matrix/client/v3/login" \
     -H "Content-Type: application/json" \
     -d "{
         \"type\": \"m.login.password\",
