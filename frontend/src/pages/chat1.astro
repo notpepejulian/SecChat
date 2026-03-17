@@ -1,0 +1,1353 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Chat - ChatSender">
+    <div class="fixed inset-0 bg-[#0a0118] overflow-hidden -z-10">
+        <div
+            class="absolute w-[800px] h-[800px] bg-[#7f0df2]/20 top-[-20%] left-[-20%] rounded-full blur-[120px] animate-pulse"
+        >
+        </div>
+
+        <div
+            class="absolute w-[600px] h-[600px] bg-purple-500/20 bottom-[-10%] right-[-10%] rounded-full blur-[120px] animate-pulse"
+            style="animation-delay: 2s;"
+        >
+        </div>
+
+        <div
+            class="absolute w-[400px] h-[400px] bg-indigo-600/15 top-[30%] right-[15%] rounded-full blur-[100px]"
+        >
+        </div>
+
+        <div
+            class="absolute w-[500px] h-[500px] bg-violet-600/15 bottom-[20%] left-[10%] rounded-full blur-[100px]"
+        >
+        </div>
+    </div>
+
+    <div
+        id="mainContent"
+        class="relative h-[100dvh] max-h-[100dvh] flex flex-col lg:flex-row overflow-hidden"
+    >
+        <!-- Sidebar (Left) - Columna 1 -->
+        <aside
+            id="sidebarNavbar"
+            class="w-20 lg:w-64 border-r border-white/10 flex flex-col justify-between py-6 px-4 shrink-0 z-30"
+        >
+            <div class="flex flex-col gap-8">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 px-2">
+                    <div class="inline-flex relative group">
+                        <div
+                            class="absolute inset-0 bg-purple-600 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"
+                        >
+                        </div>
+                        <div
+                            class="relative p-2.5 bg-gradient-to-br from-purple-900/80 to-black rounded-2xl border border-purple-500/30 shadow-2xl animate-float"
+                        >
+                            <svg
+                                class="w-6 h-6 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                ></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h2
+                        class="hidden lg:block text-xl font-bold tracking-tight text-white"
+                    >
+                        ChatSender
+                    </h2>
+                </div>
+                <!-- New Chat Button -->
+                <button
+                    id="startChatBtn"
+                    class="bg-purple-600 hover:bg-purple-700 transition-all text-white rounded-xl py-3 px-3 lg:px-4 flex items-center justify-center lg:justify-start gap-3 shadow-lg shadow-purple-600/20"
+                >
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="hidden lg:block font-medium">New Chat</span>
+                </button>
+                <!-- Nav Icons -->
+                <nav class="flex flex-col gap-2">
+                    <div
+                        class="lg:px-2 py-1 text-slate-500 text-xs font-bold uppercase tracking-wider hidden lg:block"
+                    >
+                        Navigation
+                    </div>
+                    <a
+                        class="glass-active flex items-center justify-center lg:justify-start gap-4 p-3 rounded-lg text-white"
+                        href="#"
+                    >
+                        <span class="material-symbols-outlined text-purple-400"
+                            >chat_bubble</span
+                        >
+                        <span class="hidden lg:block font-medium">Messages</span
+                        >
+                    </a>
+                    <button
+                        id="showProfileBtn"
+                        class="hover:bg-white/5 flex items-center justify-center lg:justify-start gap-4 p-3 rounded-lg transition-all text-slate-400 hover:text-white"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            ></path>
+                        </svg>
+                        <span class="hidden lg:block font-medium"
+                            >User Info</span
+                        >
+                    </button>
+                </nav>
+            </div>
+            <!-- Profile Section -->
+            <div class="flex flex-col gap-4">
+                <div class="glass p-3 rounded-xl hidden lg:block">
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <div
+                                id="userInitialCircle"
+                                class="size-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-400 border border-white/20 flex items-center justify-center text-white font-bold shrink-0"
+                            >
+                                ?
+                            </div>
+                            <div
+                                class="flex flex-col overflow-hidden text-white"
+                            >
+                                <span
+                                    id="userAlias"
+                                    class="font-bold text-sm truncate"
+                                    >Username</span
+                                >
+                                <span
+                                    class="text-[10px] text-slate-400 font-mono"
+                                    >Matrix User</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        id="openQRModalBtn"
+                        class="w-full bg-white/5 hover:bg-white/10 transition-all rounded-lg py-2 flex items-center justify-center gap-2 text-xs font-medium text-white"
+                    >
+                        <span class="material-symbols-outlined text-sm"
+                            >qr_code_scanner</span
+                        >
+                        QR Scanner
+                    </button>
+                </div>
+                <button
+                    id="logoutButton"
+                    class="flex items-center justify-center lg:justify-start gap-4 p-3 rounded-lg transition-all text-red-400 hover:bg-red-400/10 w-full"
+                >
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="hidden lg:block font-medium">Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Chat List (Middle) - Columna 2 -->
+        <div
+            id="chatListSidebar"
+            class="hidden sm:flex w-80 lg:w-[400px] border-r border-white/10 flex-col shrink-0"
+        >
+            <!-- Search & Header -->
+            <div class="p-6 border-b border-white/10">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-white">Chats</h1>
+                    <span
+                        class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white"
+                        >filter_list</span
+                    >
+                </div>
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl"
+                        >search</span
+                    >
+                    <input
+                        id="chatSearchInput"
+                        class="w-full bg-white/5 border-none rounded-xl py-3 pl-11 pr-4 text-sm focus:ring-1 focus:ring-purple-600 placeholder:text-slate-500 text-white"
+                        placeholder="Search conversations..."
+                        type="text"
+                    />
+                </div>
+            </div>
+            <!-- Thread List -->
+            <div id="chatsList" class="flex-1 overflow-y-auto custom-scrollbar">
+                <!-- Se poblará dinámicamente -->
+                <div class="text-center py-8">
+                    <p class="text-white/20 text-xs text-white">
+                        No hay chats activos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area (Right) - Columna 3 -->
+        <main
+            id="chatArea"
+            class="flex-1 hidden flex flex-col bg-white/[0.01] relative"
+        >
+            <!-- Empty State -->
+            <div
+                id="emptyState"
+                class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10 bg-[#0a0118]/40 backdrop-blur-sm"
+            >
+                <div
+                    class="w-20 h-20 bg-purple-600/10 rounded-full flex items-center justify-center mb-6"
+                >
+                    <span
+                        class="material-symbols-outlined text-4xl text-purple-400"
+                        >chat</span
+                    >
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">
+                    Selecciona un chat
+                </h2>
+                <p class="text-slate-400 max-w-sm">
+                    Selecciona una conversación o busca una llave pública para
+                    empezar a chatear.
+                </p>
+            </div>
+
+            <!-- Header -->
+            <header
+                class="h-20 border-b border-white/10 px-8 flex items-center justify-between shrink-0 glass"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        id="activeChatAvatar"
+                        class="size-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-600/20"
+                    >
+                        ?
+                    </div>
+                    <div>
+                        <h3
+                            id="activeChatName"
+                            class="font-bold text-lg leading-tight text-white"
+                        >
+                            Satoshi
+                        </h3>
+                        <div class="flex items-center gap-1.5">
+                            <span
+                                id="activeChatStatus"
+                                class="text-[10px] text-slate-500 font-bold uppercase tracking-wider"
+                                >Cifrado E2E</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-all"
+                        >search</button
+                    >
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-all"
+                        >more_vert</button
+                    >
+                    <button
+                        id="headerInfoBtn"
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-all"
+                        >info</button
+                    >
+                </div>
+            </header>
+
+            <!-- Message Area -->
+            <div
+                id="chatMessages"
+                class="flex-1 overflow-y-auto p-8 flex flex-col gap-6 custom-scrollbar pb-32"
+            >
+                <!-- Mensajes dinámicos -->
+            </div>
+
+            <div
+                id="messageInputArea"
+                class="p-6 shrink-0 absolute bottom-0 left-0 right-0 hidden z-20"
+            >
+                <form
+                    id="messageForm"
+                    class="glass-purple-dark rounded-[2rem] flex items-center gap-4 p-2 px-6 group transition-all duration-500 bg-white/5 bg-gradient-to-r from-purple-500/10 to-white/5 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-[1.01]"
+                >
+                    <button
+                        type="button"
+                        class="size-11 flex items-center justify-center rounded-2xl text-purple-300/60 hover:bg-purple-500/10 hover:text-purple-300 transition-all duration-300"
+                    >
+                        <span class="material-symbols-outlined text-2xl"
+                            >add_circle</span
+                        >
+                    </button>
+                    <div class="flex-1 relative flex items-center">
+                        <input
+                            id="messageInput"
+                            class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-white text-sm placeholder:text-purple-300/30 py-2.5"
+                            style="border: none !important; outline: none !important; box-shadow: none !important; background-color: transparent !important;"
+                            placeholder="Escribe un mensaje seguro..."
+                            type="text"
+                            autocomplete="off"
+                        />
+                        <div
+                            class="absolute bottom-0 left-0 h-[1px] w-0 bg-purple-500 group-focus-within:w-full transition-all duration-500"
+                        >
+                        </div>
+                    </div>
+                    <button
+                        type="submit"
+                        id="sendMessageBtn"
+                        class="bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 text-white size-11 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-600/20 active:scale-95"
+                    >
+                        <span class="material-symbols-outlined text-2xl"
+                            >send</span
+                        >
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para nuevo chat -->
+    <div
+        id="newChatModal"
+        class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+    >
+        <div
+            class="bg-gradient-to-br from-purple-900/30 to-black p-8 sm:p-10 rounded-[3rem] border border-purple-500/20 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-500 w-full max-w-lg shadow-[0_0_50px_rgba(147,51,234,0.15)]"
+            style="animation: fade-in-up 0.6s ease-out;"
+        >
+            <div class="flex items-center justify-between mb-8 relative z-10">
+                <h2 class="text-white text-2xl font-bold tracking-tight">
+                    Iniciar Nuevo Chat
+                </h2>
+                <button
+                    id="closeModalBtn"
+                    class="text-purple-400 hover:text-white transition-all p-2 hover:bg-purple-500/20 rounded-full"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="newChatForm" class="space-y-6 relative z-10">
+                <div>
+                    <label
+                        for="recipientInput"
+                        class="block text-xs font-bold text-purple-300/70 uppercase tracking-[0.2em] mb-3 ml-1"
+                    >
+                        Alias Temporal o Llave Pública
+                    </label>
+                    <textarea
+                        id="recipientInput"
+                        rows="3"
+                        class="w-full px-5 py-4 bg-black/40 border border-purple-500/20 rounded-[1.5rem] text-purple-100 placeholder-purple-500/20 text-sm font-mono focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-all resize-none"
+                        placeholder="Ejemplo: user_abc123..."
+                        required></textarea>
+                    <div class="mt-3 px-4 flex items-start gap-2.5">
+                        <svg
+                            class="w-6 h-6 text-purple-400/80 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            >
+                            </path>
+                        </svg>
+                        <p
+                            class="text-[12px] leading-relaxed text-purple-100/40"
+                        >
+                            Los alias temporales cambian en cada sesión.
+                            Solicita el alias o llave pública actualizada al
+                            destinatario.
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    id="connectButton"
+                    class="w-full bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/40 text-white font-bold py-4 rounded-2xl transition-all duration-300 transform hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-3 group/btn"
+                >
+                    <span id="connectButtonText" class="tracking-wide"
+                        >Conectar</span
+                    >
+                    <svg
+                        id="connectButtonIcon"
+                        class="w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                </button>
+            </form>
+
+            <div
+                class="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/10 blur-[100px] rounded-full"
+            >
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar llave pública -->
+    <div
+        id="publicKeyModal"
+        class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+    >
+        <div
+            class="bg-gradient-to-br from-purple-900/30 to-black p-8 sm:p-10 rounded-[3rem] border border-purple-500/20 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-500 w-full max-w-lg shadow-[0_0_50px_rgba(147,51,234,0.15)]"
+            style="animation: fade-in-up 0.6s ease-out;"
+        >
+            <div class="flex items-center justify-between mb-8 relative z-10">
+                <h2 class="text-white text-2xl font-bold tracking-tight">
+                    Tu Llave Pública
+                </h2>
+                <button
+                    id="closePublicKeyModalBtn"
+                    class="text-purple-400 hover:text-white transition-all p-2 hover:bg-purple-500/20 rounded-full"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-6 relative z-10">
+                <div>
+                    <label
+                        class="block text-[10px] font-bold text-purple-300/70 uppercase tracking-[0.2em] mb-3 ml-1"
+                    >
+                        Tu Alias Temporal
+                    </label>
+                    <div
+                        id="modalUserAlias"
+                        class="w-full px-5 py-3 bg-black/60 border border-purple-500/10 rounded-xl text-purple-200 text-sm font-bold tracking-tight"
+                    >
+                        Cargando...
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-[10px] font-bold text-purple-300/70 uppercase tracking-[0.2em] mb-3 ml-1"
+                    >
+                        Llave pública
+                    </label>
+                    <div class="relative group/textarea">
+                        <textarea
+                            id="publicKeyDisplay"
+                            rows="6"
+                            class="w-full px-5 py-4 bg-black/60 border border-purple-500/20 rounded-[1.5rem] text-purple-200 text-xs font-mono resize-none focus:outline-none focus:border-purple-500/40 transition-all leading-relaxed"
+                            readonly
+                            >-----BEGIN PUBLIC KEY-----
+                            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7V...</textarea
+                        >
+
+                        <button
+                            id="copyPublicKeyBtn"
+                            class="absolute top-3 right-3 text-purple-400 hover:text-white transition-all p-2.5 bg-purple-500/5 hover:bg-purple-500/20 border border-purple-500/10 rounded-xl active:scale-90"
+                            title="Copiar Llave"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="mt-4 px-2 flex items-start gap-3">
+                        <div class="p-2 bg-purple-500/10 rounded-lg">
+                            <svg
+                                class="w-5 h-5 text-purple-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <p
+                            class="text-[11px] leading-relaxed text-purple-100/40"
+                        >
+                            Esta llave es necesaria para que otros usuarios
+                            puedan comunicarse contigo de forma segura.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="absolute -top-24 -left-24 w-64 h-64 bg-purple-600/5 blur-[100px] rounded-full pointer-events-none"
+            >
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal QR -->
+    <div id="qrModal" class="fixed inset-0 z-50 hidden">
+        <div
+            class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            id="qrModalBackdrop"
+        >
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div
+                class="bg-[#1a0b2e] border border-purple-500/20 rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden animate-fade-in-up"
+            >
+                <!-- Header -->
+                <div
+                    class="p-4 border-b border-purple-500/20 flex items-center justify-between bg-black/20"
+                >
+                    <h3 class="text-white font-bold text-lg">
+                        Conexión Segura
+                    </h3>
+                    <button
+                        id="closeQrModalBtn"
+                        class="text-purple-400 hover:text-white transition-colors"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path></svg
+                        >
+                    </button>
+                </div>
+
+                <!-- Tabs -->
+                <div
+                    class="flex p-1.5 bg-black/40 backdrop-blur-md rounded-[2rem] border border-purple-500/10 mb-6"
+                >
+                    <button
+                        id="tabMyCode"
+                        class="flex-1 py-2.5 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-purple-600/20 to-purple-900/40 border border-purple-500/30 rounded-[1.8rem] shadow-[0_0_15px_rgba(147,51,234,0.1)] transition-all duration-300"
+                    >
+                        Mi Código
+                    </button>
+                    <button
+                        id="tabScan"
+                        class="flex-1 py-2.5 text-sm font-medium text-purple-400/50 hover:text-purple-200 transition-all duration-300 rounded-[1.8rem] hover:bg-purple-500/5"
+                    >
+                        Escanear
+                    </button>
+                </div>
+
+                <!-- Content: My Code -->
+                <div
+                    id="qrMyCodeView"
+                    class="p-8 flex flex-col items-center text-center"
+                >
+                    <div
+                        class="bg-white p-4 rounded-xl mb-4 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
+                    >
+                        <canvas id="qrCanvas" class="w-48 h-48"></canvas>
+                    </div>
+                    <p class="text-purple-200/60 text-xs mb-2">
+                        Este código QR contiene tu identidad pública.
+                    </p>
+                    <p
+                        class="text-purple-300 font-mono text-[10px] break-all px-4"
+                        id="qrHashDisplay"
+                    >
+                        ...
+                    </p>
+                </div>
+
+                <!-- Content: Scan -->
+                <div
+                    id="qrScanView"
+                    class="hidden p-0 relative bg-black h-[350px]"
+                >
+                    <div id="reader" class="w-full h-full"></div>
+                    <div
+                        class="absolute inset-0 pointer-events-none border-[30px] border-black/50 z-10"
+                    >
+                        <div
+                            class="border-2 border-purple-500 w-full h-full relative"
+                        >
+                            <div
+                                class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-purple-500 -mt-0.5 -ml-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-purple-500 -mt-0.5 -mr-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-purple-500 -mb-0.5 -ml-0.5"
+                            >
+                            </div>
+                            <div
+                                class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-500 -mb-0.5 -mr-0.5"
+                            >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute bottom-4 left-0 right-0 text-center z-20"
+                    >
+                        <p
+                            class="text-white text-xs bg-black/60 inline-blocks px-2 py-1 rounded"
+                        >
+                            Apunta al código QR de otro usuario
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        import { authService } from "../services/authService";
+        import { matrixService } from "../services/matrixService";
+        import QRCode from "qrcode";
+        import { Html5Qrcode } from "html5-qrcode";
+
+        // Verificar autenticación
+        if (!authService.isAuthenticated()) {
+            window.location.href = "/login";
+        } else {
+            // Registrar actividad del usuario para mantener la sesión viva
+            const updateSessionActivity = () => {
+                authService.updateActivity();
+            };
+
+            window.addEventListener("mousemove", updateSessionActivity);
+            window.addEventListener("keydown", updateSessionActivity);
+            window.addEventListener("touchstart", updateSessionActivity);
+            window.addEventListener("click", updateSessionActivity);
+        }
+
+        // Manejo del teclado en móviles (Visual Viewport API)
+        if (window.visualViewport) {
+            const viewport = window.visualViewport;
+            const mainContent = document.getElementById("mainContent");
+
+            const handleResize = () => {
+                if (!mainContent) return;
+
+                // Actualizar variables CSS con la geometría real del viewport visible
+                // Esto asegura que si el navegador hace scroll (offsetTop), el contenedor baje con él
+                mainContent.style.setProperty(
+                    "--app-height",
+                    `${viewport.height}px`,
+                );
+                mainContent.style.setProperty(
+                    "--app-top",
+                    `${viewport.offsetTop}px`,
+                );
+
+                // Si el teclado está abierto (altura reducida)
+                if (viewport.height < window.innerHeight) {
+                    // Scroll al último mensaje
+                    const messagesContainer =
+                        document.getElementById("chatMessages");
+                    if (messagesContainer) {
+                        messagesContainer.scrollTop =
+                            messagesContainer.scrollHeight;
+                    }
+                }
+            };
+
+            viewport.addEventListener("resize", handleResize);
+            viewport.addEventListener("scroll", handleResize);
+
+            // Inicializar
+            handleResize();
+        }
+
+        // Elementos del DOM
+        const chatsList = document.getElementById(
+            "chatsList",
+        ) as HTMLDivElement;
+        const sidebarNavbar = document.getElementById(
+            "sidebarNavbar",
+        ) as HTMLElement;
+        const chatListSidebar = document.getElementById(
+            "chatListSidebar",
+        ) as HTMLElement;
+        const userInitialCircle = document.getElementById(
+            "userInitialCircle",
+        ) as HTMLElement;
+        const startChatBtn = document.getElementById(
+            "startChatBtn",
+        ) as HTMLButtonElement;
+        const chatSearchInput = document.getElementById(
+            "chatSearchInput",
+        ) as HTMLInputElement;
+
+        const chatMessages = document.getElementById(
+            "chatMessages",
+        ) as HTMLDivElement;
+        const messageInput = document.getElementById(
+            "messageInput",
+        ) as HTMLInputElement;
+        const messageForm = document.getElementById(
+            "messageForm",
+        ) as HTMLFormElement;
+        const messageInputArea = document.getElementById(
+            "messageInputArea",
+        ) as HTMLDivElement;
+        const emptyState = document.getElementById(
+            "emptyState",
+        ) as HTMLDivElement;
+
+        // Header elements
+        const activeChatAvatar = document.getElementById(
+            "activeChatAvatar",
+        ) as HTMLElement;
+        const activeChatName = document.getElementById(
+            "activeChatName",
+        ) as HTMLElement;
+        const activeChatStatus = document.getElementById(
+            "activeChatStatus",
+        ) as HTMLElement;
+        const headerInfoBtn = document.getElementById("headerInfoBtn");
+
+        const mainContent = document.getElementById(
+            "mainContent",
+        ) as HTMLElement;
+        const logoutButton = document.getElementById(
+            "logoutButton",
+        ) as HTMLButtonElement;
+
+        // Modal nuevo chat
+        const newChatModal = document.getElementById(
+            "newChatModal",
+        ) as HTMLDivElement;
+        const closeModalBtn = document.getElementById(
+            "closeModalBtn",
+        ) as HTMLButtonElement;
+        const newChatForm = document.getElementById(
+            "newChatForm",
+        ) as HTMLFormElement;
+        const recipientInput = document.getElementById(
+            "recipientInput",
+        ) as HTMLTextAreaElement;
+        const connectButton = document.getElementById(
+            "connectButton",
+        ) as HTMLButtonElement;
+        const connectButtonText = document.getElementById(
+            "connectButtonText",
+        ) as HTMLSpanElement;
+
+        // Modal llave pública
+        const publicKeyModal = document.getElementById(
+            "publicKeyModal",
+        ) as HTMLDivElement;
+        const closePublicKeyModalBtn = document.getElementById(
+            "closePublicKeyModalBtn",
+        );
+        const openQrBtn = document.getElementById("openQRModalBtn");
+        const publicKeyDisplay = document.getElementById(
+            "publicKeyDisplay",
+        ) as HTMLTextAreaElement;
+        const copyPublicKeyBtn = document.getElementById(
+            "copyPublicKeyBtn",
+        ) as HTMLButtonElement;
+        const showProfileBtn = document.getElementById("showProfileBtn");
+        const modalUserAlias = document.getElementById("modalUserAlias");
+
+        // Tabs QR
+        const tabMyCode = document.getElementById("tabMyCode");
+        const tabScan = document.getElementById("tabScan");
+        const qrMyCodeView = document.getElementById("qrMyCodeView");
+        const qrScanView = document.getElementById("qrScanView");
+
+        let currentChatRoomId: string | null = null;
+        let currentRecipientPublicKey: string | null = null;
+        let currentRecipientAlias: string | null = null;
+        let activeChats: Array<{
+            roomId: string;
+            recipientAlias: string;
+            recipientUserId: string;
+            recipientPublicKey?: string;
+        }> = [];
+        let sessionInfo: any = null;
+
+        // Cargar información del usuario
+        async function loadUserInfo() {
+            try {
+                const token = authService.getToken();
+                if (!token) {
+                    window.location.href = "/login";
+                    return;
+                }
+
+                // REGISTRAR LISTENERS ANTES DE INICIAR SESIÓN
+                matrixService.onMessage((roomId, event) => {
+                    if (currentChatRoomId === roomId) {
+                        const content = event.getContent();
+                        if (content.msgtype === "m.text") {
+                            appendMessageToUI(
+                                content.body,
+                                "other",
+                                new Date(event.getTs()).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                }),
+                            );
+                        }
+                    }
+                });
+
+                matrixService.onRoomUpdate((room) => {
+                    syncExistingChats();
+                });
+
+                // Iniciar sesión
+                sessionInfo = await matrixService.startSession(token);
+
+                // Set user info
+                if (userInitialCircle) {
+                    userInitialCircle.textContent = sessionInfo.alias
+                        .charAt(0)
+                        .toUpperCase();
+                }
+                const userAliasEl = document.getElementById("userAlias");
+                if (userAliasEl) {
+                    userAliasEl.textContent = sessionInfo.alias;
+                }
+                if (modalUserAlias) {
+                    modalUserAlias.textContent = sessionInfo.alias;
+                }
+
+                console.log("Sesión Matrix iniciada:", sessionInfo);
+                await syncExistingChats();
+            } catch (error) {
+                console.error("Error al iniciar sesión Matrix:", error);
+                alert("Error al conectar con el servidor de chat.");
+            }
+
+            const publicKey = authService.getPublicKey() || "No disponible";
+            publicKeyDisplay.value = publicKey;
+        }
+
+        // Sincronizar salas existentes
+        async function syncExistingChats() {
+            if (!matrixService.isConnected()) return;
+
+            const rooms = matrixService.getRooms();
+            const myUserId = matrixService.getCurrentUserId();
+
+            for (const room of rooms) {
+                if (activeChats.find((c) => c.roomId === room.roomId)) continue;
+
+                const members = room.getJoinedMembers();
+                const recipient = members.find(
+                    (m: any) => m.userId !== myUserId,
+                );
+
+                if (recipient) {
+                    try {
+                        const response = await fetch("/api/users/lookup", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ query: recipient.userId }),
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.found) {
+                                activeChats.push({
+                                    roomId: room.roomId,
+                                    recipientAlias: data.alias,
+                                    recipientUserId: recipient.userId,
+                                    recipientPublicKey: data.publicKey,
+                                });
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Error recuperando alias", err);
+                    }
+                }
+            }
+            renderActiveChats();
+        }
+
+        // Renderizar lista de chats
+        function renderActiveChats() {
+            if (activeChats.length === 0) {
+                chatsList.innerHTML = `
+                <div class="text-center py-8">
+                    <p class="text-white/20 text-xs">No hay chats activos.</p>
+                </div>
+            `;
+                return;
+            }
+
+            chatsList.innerHTML = activeChats
+                .map((chat) => {
+                    const isActive = currentChatRoomId === chat.roomId;
+                    return `
+                <div 
+                    data-chat-id="${chat.roomId}"
+                    class="chat-item p-4 flex gap-4 hover:bg-white/5 transition-all cursor-pointer border-b border-white/5 ${isActive ? "glass-active" : ""}"
+                >
+                    <div class="shrink-0">
+                        <div class="size-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+                            ${chat.recipientAlias.charAt(0).toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-slate-300 pb-2">${chat.recipientAlias}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 truncate leading-relaxed">Haz clic para abrir la conversación</p>
+                    </div>
+                </div>
+            `;
+                })
+                .join("");
+
+            document.querySelectorAll(".chat-item").forEach((item) => {
+                item.addEventListener("click", (e) => {
+                    const chatId = (
+                        e.currentTarget as HTMLElement
+                    ).getAttribute("data-chat-id");
+                    const chat = activeChats.find((c) => c.roomId === chatId);
+                    if (chat) openChat(chat);
+                });
+            });
+        }
+
+        function openChat(chat: (typeof activeChats)[0]) {
+            currentChatRoomId = chat.roomId;
+            currentRecipientAlias = chat.recipientAlias;
+            currentRecipientPublicKey = chat.recipientPublicKey || null;
+
+            const chatArea = document.getElementById("chatArea");
+            if (chatArea) chatArea.classList.remove("hidden");
+
+            // Update header
+            activeChatAvatar.textContent = chat.recipientAlias
+                .charAt(0)
+                .toUpperCase();
+            activeChatName.textContent = chat.recipientAlias;
+            activeChatStatus.textContent = "Cifrado E2E";
+
+            emptyState.classList.add("hidden");
+            messageInputArea.classList.remove("hidden");
+            messageInput.disabled = false;
+
+            loadMessages(chat.roomId);
+        }
+
+        async function loadMessages(roomId: string) {
+            chatMessages.innerHTML = "";
+            const timeline = matrixService.getRoomTimeline(roomId);
+
+            timeline.forEach((event) => {
+                if (event.getType() !== "m.room.message") return;
+                const content = event.getContent();
+                if (content.msgtype !== "m.text") return;
+
+                const isMe =
+                    event.getSender() === matrixService.getCurrentUserId();
+                const time = new Date(event.getTs()).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+
+                appendMessageToUI(content.body, isMe ? "me" : "other", time);
+            });
+        }
+
+        function appendMessageToUI(
+            text: string,
+            from: "me" | "other",
+            time: string,
+        ) {
+            const isMe = from === "me";
+            // Use an array to avoid triggering the 'border' attribute lint error in template literals
+            const avatarClasses = isMe ? ["glass-purple"] : ["bg-slate-100"];
+
+            const messageHTML = `
+            <div class="flex ${isMe ? "self-end flex-row-reverse" : "self-start flex-row"} gap-3 max-w-[85%] sm:max-w-[75%] animate-fade-in-up">
+                <div class="size-8 rounded-full ${avatarClasses.join(" ")} shrink-0 mt-auto flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
+                    ${isMe ? "YO" : activeChatName.textContent?.charAt(0) || "?"}
+                </div>
+                <div class="flex flex-col ${isMe ? "items-end" : "items-start"} gap-1.5 min-w-0">
+                    <div class="${isMe ? "glass-purple rounded-br-none" : "glass-white rounded-bl-none"} p-4 px-5 rounded-[22px] backdrop-blur-xl shadow-xl border border-white/10">
+                        <p class="text-sm leading-relaxed text-white/95 break-all overflow-wrap-anywhere overflow-hidden whitespace-normal">${text}</p>
+                    </div>
+                    <div class="flex items-center gap-2 px-1 opacity-60">
+                        <span class="text-[9px] text-purple-200 font-medium tracking-wide uppercase">${time}</span>
+                        ${isMe ? '<span class="material-symbols-outlined text-[14px] text-purple-400">done_all</span>' : ""}
+                    </div>
+                </div>
+            </div>
+        `;
+            chatMessages.insertAdjacentHTML("beforeend", messageHTML);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Enviar mensaje
+        messageForm?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const text = messageInput.value.trim();
+            if (!text || !currentChatRoomId) return;
+
+            messageInput.value = "";
+            appendMessageToUI(
+                text,
+                "me",
+                new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }),
+            );
+
+            try {
+                await matrixService.sendMessage(currentChatRoomId, text);
+            } catch (error) {
+                console.error("Error enviando mensaje", error);
+            }
+        });
+
+        // Modales
+        function openNewChatModal() {
+            newChatModal.classList.remove("hidden");
+            recipientInput.value = "";
+        }
+        function closeNewChatModal() {
+            newChatModal.classList.add("hidden");
+        }
+        function openPublicKeyModal() {
+            publicKeyModal.classList.remove("hidden");
+        }
+        function closePublicKeyModal() {
+            publicKeyModal.classList.add("hidden");
+        }
+
+        startChatBtn?.addEventListener("click", openNewChatModal);
+        closeModalBtn?.addEventListener("click", closeNewChatModal);
+        showProfileBtn?.addEventListener("click", openPublicKeyModal);
+        closePublicKeyModalBtn?.addEventListener("click", closePublicKeyModal);
+
+        headerInfoBtn?.addEventListener("click", () => {
+            if (currentRecipientAlias && currentRecipientPublicKey) {
+                if (modalUserAlias)
+                    modalUserAlias.textContent = currentRecipientAlias;
+                if (publicKeyDisplay)
+                    publicKeyDisplay.value = currentRecipientPublicKey;
+                openPublicKeyModal();
+            }
+        });
+
+        openQrBtn?.addEventListener("click", () => {
+            openQRModal();
+        });
+
+        // Logout
+        const performLogout = async () => {
+            authService.logout();
+            window.location.href = "/login";
+        };
+        logoutButton?.addEventListener("click", performLogout);
+
+        // Initial load
+        loadUserInfo();
+
+        // Lógica QR (Simplificada para que funcione con el nuevo Col 1)
+        const qrModal = document.getElementById("qrModal");
+        const closeQrBtn = document.getElementById("closeQrModalBtn");
+
+        function openQRModal() {
+            qrModal?.classList.remove("hidden");
+            generateMyQR();
+        }
+
+        function closeQRModal() {
+            qrModal?.classList.add("hidden");
+            stopScanner();
+        }
+
+        closeQrBtn?.addEventListener("click", closeQRModal);
+
+        tabMyCode?.addEventListener("click", () => {
+            qrMyCodeView?.classList.remove("hidden");
+            qrScanView?.classList.add("hidden");
+            if (tabMyCode)
+                tabMyCode.className =
+                    "flex-1 py-2.5 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-purple-600/20 to-purple-900/40 border border-purple-500/30 rounded-[1.8rem] shadow-[0_0_15px_rgba(147,51,234,0.1)] transition-all duration-300";
+            if (tabScan)
+                tabScan.className =
+                    "flex-1 py-2.5 text-sm font-medium text-purple-400/50 hover:text-purple-200 transition-all duration-300 rounded-[1.8rem] hover:bg-purple-500/5";
+            stopScanner();
+        });
+
+        tabScan?.addEventListener("click", () => {
+            qrMyCodeView?.classList.add("hidden");
+            qrScanView?.classList.remove("hidden");
+            if (tabScan)
+                tabScan.className =
+                    "flex-1 py-2.5 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-purple-600/20 to-purple-900/40 border border-purple-500/30 rounded-[1.8rem] shadow-[0_0_15px_rgba(147,51,234,0.1)] transition-all duration-300";
+            if (tabMyCode)
+                tabMyCode.className =
+                    "flex-1 py-2.5 text-sm font-medium text-purple-400/50 hover:text-purple-200 transition-all duration-300 rounded-[1.8rem] hover:bg-purple-500/5";
+            startScanner();
+        });
+
+        // Copiar al portapapeles
+        async function copyToClipboard(
+            text: string,
+            button: HTMLButtonElement,
+        ) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalHTML = button.innerHTML;
+                button.innerHTML = "✔";
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            } catch (err) {
+                console.error("Error al copiar:", err);
+            }
+        }
+
+        // New Chat Form
+        newChatForm?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const recipientData = recipientInput.value.trim();
+            if (!recipientData) return;
+
+            connectButton.disabled = true;
+            connectButtonText.textContent = "Buscando...";
+
+            try {
+                const response = await fetch("/api/users/lookup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: recipientData }),
+                });
+                const data = await response.json();
+                if (!data.found) throw new Error("No encontrado");
+
+                const roomId = await matrixService.createDirectMessage(
+                    data.synapse_user_id,
+                );
+                const newChat = {
+                    roomId,
+                    recipientAlias: data.alias,
+                    recipientUserId: data.synapse_user_id,
+                };
+                activeChats.push(newChat);
+                renderActiveChats();
+                closeNewChatModal();
+                openChat(newChat);
+            } catch (err) {
+                alert("Usuario no encontrado o error en la conexión");
+            } finally {
+                connectButton.disabled = false;
+                connectButtonText.textContent = "Conectar";
+            }
+        });
+
+        // QR Functionalities (Placeholder logic to keep it working)
+        async function generateMyQR() {
+            const canvas = document.getElementById(
+                "qrCanvas",
+            ) as HTMLCanvasElement;
+            const key = authService.getPublicKey();
+            const qrHashDisplay = document.getElementById("qrHashDisplay");
+
+            if (key && canvas) {
+                if (qrHashDisplay) qrHashDisplay.textContent = key;
+                await QRCode.toCanvas(canvas, `chatsender:public_key:${key}`, {
+                    width: 200,
+                    margin: 2,
+                });
+            }
+        }
+
+        let html5QrCode: Html5Qrcode | null = null;
+        async function startScanner() {
+            try {
+                html5QrCode = new Html5Qrcode("reader");
+                await html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    async (decodedText) => {
+                        if (decodedText.startsWith("chatsender:public_key:")) {
+                            const recipientKey = decodedText.replace(
+                                "chatsender:public_key:",
+                                "",
+                            );
+                            recipientInput.value = recipientKey;
+                            closeQRModal();
+                            openNewChatModal();
+                        }
+                    },
+                    (errorMessage) => {
+                        // ignore scan errors
+                    },
+                );
+            } catch (err) {
+                console.error("Error al iniciar scanner:", err);
+            }
+        }
+
+        function stopScanner() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode
+                    .stop()
+                    .then(() => {
+                        html5QrCode?.clear();
+                    })
+                    .catch((err) =>
+                        console.error("Error al detener scanner:", err),
+                    );
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+            background: #0a0118;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-purple {
+            background: rgba(147, 51, 234, 0.4);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.25);
+        }
+        .glass-purple-dark {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-white {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .glass-active {
+            background: rgba(127, 13, 242, 0.2);
+            border: 1px solid rgba(127, 13, 242, 0.4);
+            box-shadow: inset 0 0 20px rgba(127, 13, 242, 0.1);
+        }
+        .orb {
+            position: absolute;
+            border-radius: 100%;
+            filter: blur(80px);
+            z-index: -1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.4);
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.3;
+            }
+        }
+        .animate-pulse {
+            animation: pulse 8s ease-in-out infinite;
+        }
+    </style>
+</Layout>

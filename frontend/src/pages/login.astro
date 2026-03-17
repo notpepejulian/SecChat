@@ -94,8 +94,7 @@ import Layout from "../layouts/Layout.astro";
                                 id="publicKey"
                                 rows="2"
                                 class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-xs font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 resize-none hover:bg-black/50"
-                                placeholder="Pegar llave pública..."
-                                required></textarea>
+                                placeholder="Pegar llave pública..."></textarea>
                             <div
                                 class="absolute right-3 top-3 text-purple-500/30 group-hover:text-purple-400 transition-colors"
                             >
@@ -128,8 +127,7 @@ import Layout from "../layouts/Layout.astro";
                                 id="privateKey"
                                 rows="3"
                                 class="w-full px-4 py-3 bg-black/40 border border-purple-500/20 rounded-xl text-purple-100 placeholder-purple-500/30 text-xs font-mono focus:outline-none focus:border-purple-500/80 focus:ring-1 focus:ring-purple-500/50 transition-all duration-300 resize-none hover:bg-black/50"
-                                placeholder="Pegar llave privada..."
-                                required></textarea>
+                                placeholder="Pegar llave privada..."></textarea>
                             <div
                                 class="absolute right-3 top-3 text-purple-500/30 group-hover:text-purple-400 transition-colors"
                             >
@@ -154,7 +152,7 @@ import Layout from "../layouts/Layout.astro";
                             <span
                                 class="block w-1 h-1 rounded-full bg-green-500 animate-pulse"
                             ></span>
-                            Chatea sin dar tus datos.
+                            Haz clic en el botón para generar las llaves automáticamente.
                         </p>
                     </div>
 
@@ -182,13 +180,10 @@ import Layout from "../layouts/Layout.astro";
                     <button
                         type="submit"
                         id="loginButton"
-                        class="group relative w-full bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] overflow-hidden border border-purple-500/20"
+                        class="w-full inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-200 rounded-full hover:text-purple-300 bg-gradient-to-r from-purple-500/10 to-white/1 border border-transparent border-white/10 transition-all hover:scale-105"
                     >
-                        <span
-                            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
-                        ></span>
                         <div class="flex items-center justify-center gap-2">
-                            <span id="buttonText">Desencriptar y Entrar</span>
+                            <span id="buttonText">Acceder</span>
                             <svg
                                 id="buttonIcon"
                                 class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
@@ -225,26 +220,6 @@ import Layout from "../layouts/Layout.astro";
                         </div>
                     </button>
 
-                    <div class="relative">
-                        <div
-                            class="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-purple-500/10"
-                        >
-                        </div>
-                        <div
-                            class="relative flex justify-center text-xs uppercase tracking-widest text-purple-400/40 font-bold bg-transparent px-2"
-                        >
-                            O
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        id="toggleKeygen"
-                        class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-300 text-sm font-bold hover:bg-purple-500/20 hover:text-white transition-all duration-300"
-                    >
-                        Generar nuevas llaves ahora
-                    </button>
-
                     <div
                         id="keygenContainer"
                         class="hidden animate-fade-in-up space-y-4 pt-4 border-t border-purple-500/10"
@@ -255,36 +230,10 @@ import Layout from "../layouts/Layout.astro";
                             <p
                                 class="text-xs text-purple-300/60 font-medium leading-relaxed"
                             >
-                                Esto generará un nuevo par de llaves y las
-                                registrará automáticamente.
+                                Tus nuevas llaves han sido generadas. Guárdalas
+                                si deseas volver a entrar con la misma identidad
+                                más tarde.
                             </p>
-                            <button
-                                type="button"
-                                id="generateButton"
-                                class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
-                            >
-                                <span id="genBtnText">Generar y Usar</span>
-                                <svg
-                                    id="genLoadingIcon"
-                                    class="w-4 h-4 animate-spin hidden"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        class="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path
-                                        class="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    ></path>
-                                </svg>
-                            </button>
 
                             <div
                                 id="genResult"
@@ -324,10 +273,10 @@ import Layout from "../layouts/Layout.astro";
                                     </div>
                                 </div>
                                 <p
-                                    class="text-[11px] text-green-400/80 font-medium"
+                                    class="text-[11px] text-green-400/80 font-medium text-center"
                                 >
-                                    Las llaves se han copiado arriba para que
-                                    puedas entrar.
+                                    Identidad generada correctamente.
+                                    Entrando...
                                 </p>
                             </div>
                         </div>
@@ -339,7 +288,7 @@ import Layout from "../layouts/Layout.astro";
                 >
                     <a
                         href="/"
-                        class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-200 rounded-full hover:text-purple-300 bg-white/1 hover:bg-gradient-to-r from-purple-500/10 to-white/1 border border-transparent border-white/10 transition-all hover:scale-105"
+                        class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-200 rounded-full hover:text-purple-300 bg-white/1 bg-gradient-to-r from-purple-500/10 to-white/1 border border-transparent border-white/10 transition-all hover:scale-105"
                     >
                         Volver al inicio
                     </a>
@@ -374,84 +323,74 @@ import Layout from "../layouts/Layout.astro";
     ) as HTMLDivElement;
     const errorText = document.getElementById("errorText") as HTMLSpanElement;
 
-    // Keygen elements
-    const toggleKeygen = document.getElementById(
-        "toggleKeygen",
-    ) as HTMLButtonElement;
     const keygenContainer = document.getElementById(
         "keygenContainer",
     ) as HTMLDivElement;
-    const generateButton = document.getElementById(
-        "generateButton",
-    ) as HTMLButtonElement;
-    const genBtnText = document.getElementById("genBtnText") as HTMLSpanElement;
-    const genLoadingIcon = document.getElementById(
-        "genLoadingIcon",
-    ) as unknown as SVGElement;
     const genResult = document.getElementById("genResult") as HTMLDivElement;
     const genPrivText = document.getElementById("genPrivText") as HTMLElement;
     const copyGenPriv = document.getElementById(
         "copyGenPriv",
     ) as HTMLButtonElement;
 
-    toggleKeygen?.addEventListener("click", () => {
-        keygenContainer?.classList.toggle("hidden");
-        toggleKeygen.textContent = keygenContainer?.classList.contains("hidden")
-            ? "Generar nuevas llaves ahora"
-            : "Ocultar generador";
-    });
-
-    generateButton?.addEventListener("click", async () => {
-        generateButton.disabled = true;
-        genBtnText.textContent = "Generando...";
-        genLoadingIcon.classList.remove("hidden");
-        hideError();
-
-        try {
-            const res = await fetch("/api/keys/generate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ count: 1 }),
-            });
-            const data = await res.json();
-
-            if (data.keys && data.keys[0]) {
-                const key = data.keys[0];
-                publicKeyInput.value = key.public_key;
-                privateKeyInput.value = key.private_key;
-
-                genPrivText.textContent = key.private_key;
-                genResult.classList.remove("hidden");
-
-                copyGenPriv.onclick = () => {
-                    navigator.clipboard.writeText(key.private_key);
-                    const originalHTML = copyGenPriv.innerHTML;
-                    copyGenPriv.innerHTML =
-                        '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-                    setTimeout(
-                        () => (copyGenPriv.innerHTML = originalHTML),
-                        2000,
-                    );
-                };
-            }
-        } catch (error) {
-            showError("Error al generar llaves desde el servidor.");
-        } finally {
-            generateButton.disabled = false;
-            genBtnText.textContent = "Generar y Usar";
-            genLoadingIcon.classList.add("hidden");
-        }
-    });
-
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const publicKey = publicKeyInput.value.trim();
-        const privateKey = privateKeyInput.value.trim();
+        let publicKey = publicKeyInput.value.trim();
+        let privateKey = privateKeyInput.value.trim();
 
+        // Si no hay llaves, las generamos automáticamente
         if (!publicKey || !privateKey) {
-            showError("Ambas llaves son requeridas para la autenticación.");
-            return;
+            loginButton.disabled = true;
+            buttonText.textContent = "Generando llaves seguras...";
+            buttonIcon.classList.add("hidden");
+            loadingIcon.classList.remove("hidden");
+            hideError();
+
+            try {
+                const res = await fetch("/api/keys/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ count: 1 }),
+                });
+                const data = await res.json();
+
+                if (data.keys && data.keys[0]) {
+                    const key = data.keys[0];
+                    publicKey = key.public_key;
+                    privateKey = key.private_key;
+                    publicKeyInput.value = publicKey;
+                    privateKeyInput.value = privateKey;
+
+                    // Mostrar la llave privada en el contenedor de resultados por si el usuario quiere guardarla
+                    genPrivText.textContent = privateKey;
+                    genResult.classList.remove("hidden");
+                    keygenContainer.classList.remove("hidden");
+
+                    copyGenPriv.onclick = () => {
+                        navigator.clipboard.writeText(privateKey);
+                        const originalHTML = copyGenPriv.innerHTML;
+                        copyGenPriv.innerHTML =
+                            '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                        setTimeout(
+                            () => (copyGenPriv.innerHTML = originalHTML),
+                            2000,
+                        );
+                    };
+
+                    // Pequeña pausa para que el usuario vea que algo pasó
+                    await new Promise((r) => setTimeout(r, 1000));
+                } else {
+                    throw new Error(
+                        "No se pudieron generar las llaves automaticamente",
+                    );
+                }
+            } catch (error) {
+                showError(
+                    "Error al generar llaves automáticamente. Por favor, inténtalo de nuevo.",
+                );
+                resetButton();
+                return;
+            }
         }
 
         loginButton.disabled = true;
@@ -471,12 +410,8 @@ import Layout from "../layouts/Layout.astro";
             if (result.success) {
                 buttonText.textContent = "Acceso Concedido";
                 loadingIcon.classList.add("hidden");
-                loginButton.classList.remove(
-                    "from-purple-700",
-                    "to-purple-900",
-                );
-                loginButton.classList.add("from-green-600", "to-green-700");
-                window.location.href = "/chat";
+                loginButton.classList.add("bg-green-500/20", "text-green-300");
+                window.location.href = "/chat1";
             } else {
                 throw new Error(result.error || "Credenciales inválidas");
             }
@@ -488,7 +423,7 @@ import Layout from "../layouts/Layout.astro";
 
     function resetButton() {
         loginButton.disabled = false;
-        buttonText.textContent = "Desencriptar y Entrar";
+        buttonText.textContent = "Acceder";
         loadingIcon.classList.add("hidden");
         buttonIcon.classList.remove("hidden");
         loginButton.classList.remove("opacity-80", "cursor-not-allowed");
@@ -513,7 +448,7 @@ import Layout from "../layouts/Layout.astro";
     }
 
     if (authService.isAuthenticated()) {
-        window.location.href = "/chat";
+        window.location.href = "/chat1";
     }
 </script>
 
